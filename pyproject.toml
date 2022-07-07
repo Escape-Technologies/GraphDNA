@@ -20,6 +20,9 @@ readme = "README.md"
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/Escape-Technologies/GraphQLDNA/issues"
 
+[tool.poetry.scripts]
+graphqldna = 'graphqldna:cli'
+
 [tool.coverage.run]
 omit = [
     'tests/*',
