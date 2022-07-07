@@ -1,0 +1,38 @@
+{
+  "type": "python",
+  "venvActivate": "./.venv/bin/activate",
+  "steps": [
+      {
+          "name": "autoflake",
+          "command": "autoflake -ri --remove-unused-variable --ignore-init-module-imports --remove-all-unused-imports graphql-dna tests"
+      },
+      {
+          "name": "isort",
+          "command": "isort -m 9 --line-length 160 graphql-dna tests"
+      },
+      {
+          "name": "unify",
+          "command": "unify -ri graphql-dna tests"
+      },
+      {
+          "name": "docformatter",
+          "command": "docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphql-dna tests"
+      },
+      {
+          "name": "yapf",
+          "command": "yapf -ri graphql-dna tests"
+      },
+      {
+          "name": "pylint",
+          "command": "pylint --load-plugins pylint_quotes graphql-dna tests"
+      },
+      {
+          "name": "mypy",
+          "command": "mypy graphql-dna tests"
+      },
+      {
+          "name": "pytest",
+          "command": "pytest tests"
+      }
+  ]
+}

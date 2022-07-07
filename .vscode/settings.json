@@ -1,0 +1,49 @@
+{
+    "python.languageServer": "Pylance",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintPath": "pylint",
+    "python.formatting.provider": "yapf",
+    "editor.formatOnSave": true,
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "mypy.runUsingActiveInterpreter": true,
+    "emeraldwalk.runonsave": {
+      "commands": [
+        {
+          "match": "\\.py$",
+          "cmd": "cd ${workspaceFolder} && isort -m 9 --line-length 160 graphql-dna tests"
+        },
+        {
+          "match": "\\.py$",
+          "cmd": "cd ${workspaceFolder} && autoflake --in-place --remove-unused-variables --remove-all-unused-imports graphql-dna/**/*.py"
+        },
+        {
+          "match": "\\.py$",
+          "cmd": "cd ${workspaceFolder} && docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphql-dna test"
+        },
+        {
+          "match": "\\.py$",
+          "cmd": "cd ${workspaceFolder} && unify -ri graphql-dna tests"
+        }
+      ]
+    },
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": "../scripts/pytest-with-cov",
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.venv": true,
+        "**/.github": true,
+        "**/.vscode": true,
+        ".*": true,
+        "*.lock": true,
+        "*.json": true,
+        "LICENSE": true,
+        "*.js": true,
+    }
+  }
