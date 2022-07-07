@@ -3,8 +3,8 @@
 import asyncio
 import logging
 
-from graphqldna.entities.interfaces import IGraphQLDNA
 from graphqldna.entities import GraphQLEngine
+from graphqldna.entities.interfaces import IGraphQLDNA
 
 
 def detect_engine(url: str) -> GraphQLEngine:

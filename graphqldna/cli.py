@@ -1,7 +1,7 @@
 """Managing the CLI flow."""
 
-import sys
 import argparse
+import sys
 
 from graphqldna.dna import detect_engine
 

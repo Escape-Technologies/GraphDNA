@@ -4,31 +4,31 @@
   "steps": [
       {
           "name": "autoflake",
-          "command": "autoflake -ri --remove-unused-variable --ignore-init-module-imports --remove-all-unused-imports graphql-dna tests"
+          "command": "autoflake -ri --remove-unused-variable --ignore-init-module-imports --remove-all-unused-imports graphqldna tests"
       },
       {
           "name": "isort",
-          "command": "isort -m 9 --line-length 160 graphql-dna tests"
+          "command": "isort -m 9 --line-length 160 graphqldna tests"
       },
       {
           "name": "unify",
-          "command": "unify -ri graphql-dna tests"
+          "command": "unify -ri graphqldna tests"
       },
       {
           "name": "docformatter",
-          "command": "docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphql-dna tests"
+          "command": "docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphqldna tests"
       },
       {
           "name": "yapf",
-          "command": "yapf -ri graphql-dna tests"
+          "command": "yapf -ri graphqldna tests"
       },
       {
           "name": "pylint",
-          "command": "pylint --load-plugins pylint_quotes graphql-dna tests"
+          "command": "pylint --load-plugins pylint_quotes graphqldna tests"
       },
       {
           "name": "mypy",
-          "command": "mypy graphql-dna tests"
+          "command": "mypy graphqldna tests"
       },
       {
           "name": "pytest",
