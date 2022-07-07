@@ -5,6 +5,7 @@ import logging
 
 from graphqldna.entities import GraphQLEngine
 from graphqldna.entities.interfaces import IGraphQLDNA
+from graphqldna.logger import setup_logger
 
 
 def detect_engine(url: str) -> GraphQLEngine:
@@ -21,15 +22,16 @@ class GraphQLDNA(IGraphQLDNA):
     def __init__(
         self,
         url: str,
+        logger: logging.Logger | None = None,
     ) -> None:
         """Init class."""
 
         self._url = url
-        self._logger = logging.getLogger(__name__)
+        self._logger = logger or setup_logger()
 
         self._logger.info(f'Initializing GraphQLDNA for {url}.')
 
     async def run(self) -> GraphQLEngine:
         """Run a DNA test."""
 
-        return None
+        ...

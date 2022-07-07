@@ -35,6 +35,7 @@ asyncio_mode = 'strict'
 
 [tool.poetry.dependencies]
 python = ">=3.7,<3.11"
+JSON-log-formatter = "^0.5.1"
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"
