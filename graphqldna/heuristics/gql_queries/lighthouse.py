@@ -4,7 +4,7 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class Lighthouse(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         'query {__typename @include(if: falsee)}': [
             is_present_in_textual_response('Internal server error'),
             is_present_in_section('category', 'internal'),

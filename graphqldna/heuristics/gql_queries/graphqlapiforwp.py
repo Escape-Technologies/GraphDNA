@@ -4,7 +4,7 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class GraphQLAPIForWP(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         '': is_present_in_textual_response('The query in the body is empty'),
         'query @doesnotexist { __typename }': is_present_in_textual_response('No DirectiveResolver resolves directive with name \'doesnotexist\''),
         'query @skip { __typename }': is_present_in_textual_response('Argument \'if\' cannot be empty, so directive \'skip\' has been ignored'),

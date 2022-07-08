@@ -4,6 +4,6 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class Directus(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         '': is_present_in_section('INVALID_PAYLOAD', 'code'),
     }

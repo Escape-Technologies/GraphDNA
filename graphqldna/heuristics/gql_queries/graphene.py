@@ -4,6 +4,6 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class Graphene(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         'aaa': is_present_in_textual_response('Syntax Error GraphQL (1:1)'),
     }

@@ -4,7 +4,7 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class Apollo(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         'query @deprecated { __typename }':
             is_present_in_textual_response([
                 'Directive \\\"@deprecated\\\" may not be used on QUERY.',

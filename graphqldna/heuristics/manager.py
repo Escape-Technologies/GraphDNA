@@ -24,7 +24,7 @@ class HeuristicsManager(IHeuristicsManager):
 
             new_correlation = {}
 
-            for key, value in query_heuristic.genetic_correlation.items():
+            for key, value in query_heuristic.genetics.items():
                 req = IRequest(url, 'POST', {
                     'json': {
                         'query': key,
@@ -38,11 +38,11 @@ class HeuristicsManager(IHeuristicsManager):
 
                 new_correlation[req_hash] = value
 
-            query_heuristic.genetic_correlation = new_correlation
+            query_heuristic.genetics = new_correlation
 
     async def parse_requests(self, bucket: IHTTPBucket) -> None:
         for query_heuristic in self._queries_heuristics:
-            for key, detectors in query_heuristic.genetic_correlation.items():
+            for key, detectors in query_heuristic.genetics.items():
                 client_response = bucket.get(key)
 
                 if not isinstance(detectors, list):

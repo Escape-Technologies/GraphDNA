@@ -4,6 +4,6 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class Agoo(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         'query { zzz }': is_present_in_section('code', 'eval error'),
     }

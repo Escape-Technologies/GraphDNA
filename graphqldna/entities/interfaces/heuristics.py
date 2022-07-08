@@ -21,7 +21,7 @@ class IHeuristic(ABC):
 
 class IGQLQuery(IHeuristic):
 
-    genetic_correlation: dict[str, functools.partial | list[functools.partial]]
+    genetics: dict[str, functools.partial | list[functools.partial]]
 
 
 class IAppProperties(IHeuristic):

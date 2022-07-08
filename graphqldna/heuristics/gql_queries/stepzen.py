@@ -4,6 +4,6 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class Stepzen(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         '': is_present_in_textual_response('Must provide an operation.'),
     }

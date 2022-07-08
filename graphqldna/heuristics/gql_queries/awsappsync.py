@@ -4,6 +4,6 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class AWSAppSync(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         'query @skip { __typename }': is_present_in_textual_response('MisplacedDirective'),
     }

@@ -4,7 +4,7 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 class Ruby(IGQLQuery):
 
-    genetic_correlation = {
+    genetics = {
         'query @deprecated { __typename }':
             is_present_in_textual_response('\'@deprecated\' can\'t be applied to queries'),
         'query @skip { __typename }':
