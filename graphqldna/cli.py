@@ -1,10 +1,9 @@
 """Managing the CLI flow."""
 
-import sys
-import asyncio
 import argparse
+import sys
 
-from graphqldna.dna import GraphQLDNA
+from graphqldna.dna import detect_engine
 
 
 def parse_args(args: list[str]) -> argparse.Namespace:
@@ -37,5 +36,4 @@ def cli(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_args(args)
 
-    dna = GraphQLDNA(args.url)
-    asyncio.run(dna.run())
+    detect_engine(args.url)

@@ -20,6 +20,9 @@ readme = "README.md"
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/Escape-Technologies/GraphQLDNA/issues"
 
+[tool.poetry.scripts]
+graphqldna = 'graphqldna:cli'
+
 [tool.coverage.run]
 omit = [
     'tests/*',
@@ -32,6 +35,8 @@ asyncio_mode = 'strict'
 
 [tool.poetry.dependencies]
 python = ">=3.7,<3.11"
+JSON-log-formatter = "^0.5.1"
+aiohttp = {extras = ["speedups"], version = "^3.8.1"}
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"

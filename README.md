@@ -1,1 +1,1 @@
-# graphql-dna
+# GraphQL DNA
