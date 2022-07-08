@@ -1,8 +1,11 @@
 """Manage heuristics flow."""
 
+import logging
+
 from graphqldna.entities.engines import GraphQLEngine
-from graphqldna.entities.interfaces.dna import IHTTPBucket
+from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
 from graphqldna.entities.interfaces.heuristics import IHeuristicsManager
+from graphqldna.heuristics.gql_queries import import_gql_queries
 
 
 class HeuristicsManager(IHeuristicsManager):
@@ -19,4 +22,7 @@ class HeuristicsManager(IHeuristicsManager):
         If any, the highest confidence will be returned.
         """
 
-        return self._candidates[sorted(self._candidates)[-1]] if self._candidates else None
+        candidate = self._candidates[sorted(self._candidates)[-1]] if self._candidates else None
+
+        self._logger.debug(f'Best candidate: \x1b[31;20m{candidate}\x1b[0m')
+        return candidate

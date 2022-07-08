@@ -2,10 +2,13 @@
 
 """Manage the heuristics interfaces."""
 
+import logging
 from abc import ABC, abstractmethod
 from typing import Callable
 
 from graphqldna.entities.engines import GraphQLEngine
+from graphqldna.entities.interfaces import IHTTPBucket
+from graphqldna.entities.interfaces.dna import IRequest
 
 
 class IHeuristic(ABC):
@@ -13,15 +16,14 @@ class IHeuristic(ABC):
     _score: int
     _score_factor: int
 
-    @abstractmethod
     def verify(self) -> bool:
-        ...
+        raise NotImplementedError
 
 
 class IGQLQuery(IHeuristic):
 
     _score_factor = 1
-    _genetic_correlation: dict[str, Callable]
+    genetic_correlation: dict[str, Callable]
 
 
 class IAppProperties(IHeuristic):
@@ -31,6 +33,7 @@ class IAppProperties(IHeuristic):
 
 class IHeuristicsManager(ABC):
 
+    _logger: logging.Logger
     _candidates: dict[int, GraphQLEngine]
 
     @abstractmethod
@@ -38,11 +41,11 @@ class IHeuristicsManager(ABC):
         ...
 
     @abstractmethod
-    def gather_requests(self) -> None:
+    def gather_requests(self, url: str) -> list[IRequest]:
         ...
 
     @abstractmethod
-    def parse_requests(self) -> None:
+    def parse_requests(self, bucket: IHTTPBucket) -> None:
         ...
 
     @abstractmethod

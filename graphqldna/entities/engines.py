@@ -8,5 +8,6 @@ class GraphQLEngine(Enum):
 
     """Represent GraphQL Engines."""
 
-    ARIADNE = 'ariadne'
-    APOLLO = 'apollo'
+    ARIADNE = 'Ariadne'
+    APOLLO = 'Apollo'
+    AWSAPPSYNC = 'Awsappsync'
