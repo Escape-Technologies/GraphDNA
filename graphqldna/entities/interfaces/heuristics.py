@@ -13,8 +13,8 @@ from graphqldna.entities.interfaces.dna import IRequest
 
 class IHeuristic(ABC):
 
-    _score: int
-    _score_factor: int
+    score: int = 100
+    score_factor: int
 
     def verify(self) -> bool:
         raise NotImplementedError
@@ -22,13 +22,13 @@ class IHeuristic(ABC):
 
 class IGQLQuery(IHeuristic):
 
-    _score_factor = 1
+    score_factor = 1
     genetic_correlation: dict[str, Callable]
 
 
 class IAppProperties(IHeuristic):
 
-    _score_factor = 1.2
+    score_factor = 1.2
 
 
 class IHeuristicsManager(ABC):
@@ -41,11 +41,11 @@ class IHeuristicsManager(ABC):
         ...
 
     @abstractmethod
-    def gather_requests(self, url: str) -> list[IRequest]:
+    async def enqueue_requests(self, url: str, bucket: IHTTPBucket) -> None:
         ...
 
     @abstractmethod
-    def parse_requests(self, bucket: IHTTPBucket) -> None:
+    async def parse_requests(self, bucket: IHTTPBucket) -> None:
         ...
 
     @abstractmethod

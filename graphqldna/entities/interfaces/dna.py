@@ -31,21 +31,39 @@ class IRequest:
 
 class IHTTPBucket(ABC):
 
+    _logger: logging.Logger
+
     _store: dict[str, aiohttp.ClientResponse | asyncio.Task]
     _queue: list[asyncio.Task]
     _session: aiohttp.ClientSession | None
 
     @staticmethod
-    @abstractmethod
     def hash(request: IRequest) -> str:
-        ...
+        key = hash(hash(request.url) + hash(request.method)) & 0xffffffff
+
+        data = 0
+        for k, v in request.kwargs.items():
+            data += hash(f'{k},{str(v)}')
+
+        return str((key + data) & 0xffffffff)
 
     @abstractmethod
-    async def put(self, requests: list[IRequest]) -> None:
+    async def put(
+        self,
+        req: IRequest,
+        key: str,
+    ) -> None:
         ...
 
+    def get(self, key: str) -> aiohttp.ClientResponse:
+        return self._store[key]
+
     @abstractmethod
-    async def send_request(self, request: IRequest) -> None:
+    async def send_request(
+        self,
+        request: IRequest,
+        key: str,
+    ) -> None:
         ...
 
     @abstractmethod
@@ -53,7 +71,11 @@ class IHTTPBucket(ABC):
         ...
 
     @abstractmethod
-    async def _open_session(self) -> None:
+    async def open_session(self) -> None:
+        ...
+
+    @abstractmethod
+    async def close_session(self) -> None:
         ...
 
 
