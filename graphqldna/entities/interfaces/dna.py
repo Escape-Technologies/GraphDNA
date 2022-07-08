@@ -1,7 +1,3 @@
-# pylint: disable=missing-function-docstring,missing-class-docstring
-
-"""Manage the dna interfaces."""
-
 import asyncio
 import logging
 from abc import ABC, abstractmethod
@@ -55,8 +51,12 @@ class IHTTPBucket(ABC):
     ) -> None:
         ...
 
-    def get(self, key: str) -> aiohttp.ClientResponse:
-        return self._store[key]
+    @abstractmethod
+    def get(
+        self,
+        key: str,
+    ) -> aiohttp.ClientResponse:
+        ...
 
     @abstractmethod
     async def send_request(
@@ -71,7 +71,7 @@ class IHTTPBucket(ABC):
         ...
 
     @abstractmethod
-    async def open_session(self) -> None:
+    async def open_session(self) -> aiohttp.ClientSession:
         ...
 
     @abstractmethod
@@ -90,5 +90,5 @@ class IGraphQLDNA(ABC):
         return self._url
 
     @abstractmethod
-    async def run(self) -> GraphQLEngine:
+    async def run(self) -> GraphQLEngine | None:
         ...

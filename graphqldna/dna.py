@@ -12,14 +12,14 @@ from graphqldna.heuristics import HeuristicsManager
 from graphqldna.logger import setup_logger
 
 
-def detect_engine(url: str) -> GraphQLEngine:
+def detect_engine(url: str) -> GraphQLEngine | None:
     """Manage the engine detection flow."""
 
     dna = GraphQLDNA(url)
     return asyncio.run(dna.run())
 
 
-async def detect_engine_async(url: str) -> GraphQLEngine:
+async def detect_engine_async(url: str) -> GraphQLEngine | None:
     """Manage the engine detection flow asyncronously."""
 
     dna = GraphQLDNA(url)
@@ -56,11 +56,23 @@ class HTTPBucket(IHTTPBucket):
             self._store[key] = task
             self._queue.append(task)
 
+    def get(
+        self,
+        key: str,
+    ) -> aiohttp.ClientResponse:
+
+        value = self._store.get(key)
+        assert isinstance(value, aiohttp.ClientResponse)
+        return value
+
     async def send_request(
         self,
         request: IRequest,
         key: str,
-    ) -> aiohttp.ClientResponse:
+    ) -> None:
+
+        if not self._session:
+            self._session = await self.open_session()
 
         self._store[key] = await self._session.request(
             request.method,
@@ -74,12 +86,15 @@ class HTTPBucket(IHTTPBucket):
         for task in self._queue:
             await task
 
-    async def open_session(self) -> None:
+    async def open_session(self) -> aiohttp.ClientSession:
         self._session = aiohttp.ClientSession()
 
+        return self._session
+
     async def close_session(self) -> None:
-        await self._session.close()
-        self._session = None
+        if self._session:
+            await self._session.close()
+            self._session = None
 
 
 class GraphQLDNA(IGraphQLDNA):
@@ -99,7 +114,7 @@ class GraphQLDNA(IGraphQLDNA):
 
         self._logger.info(f'Initializing GraphQLDNA for {url}.')
 
-    async def run(self) -> GraphQLEngine:
+    async def run(self) -> GraphQLEngine | None:
         """Run a DNA test."""
 
         heuristics = HeuristicsManager(self._logger)

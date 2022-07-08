@@ -3,11 +3,14 @@ from graphqldna.entities.interfaces.heuristics import IGQLQuery
 from graphqldna.heuristics.utils import import_heuristics
 
 
-def find_engine(engine, possibilities):
+def find_engine(
+    engine: str,
+    possibilities: list[str],
+) -> str:
     for p in possibilities:
         if engine == p.lower():
             return p
-    raise ValueError(f'Unknown engine {engine}')
+    raise ValueError(f'Unknown engine `{engine}`, possibilities: {possibilities}')
 
 
 def import_gql_queries() -> list[IGQLQuery]:

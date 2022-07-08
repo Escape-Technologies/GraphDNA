@@ -20,8 +20,6 @@ class HeuristicsManager(IHeuristicsManager):
         self._queries_heuristics = import_gql_queries()
 
     async def enqueue_requests(self, url: str, bucket: IHTTPBucket) -> None:
-        requests: list[IRequest] = []
-
         for query_heuristic in self._queries_heuristics:
 
             new_correlation = {}
@@ -42,14 +40,17 @@ class HeuristicsManager(IHeuristicsManager):
 
             query_heuristic.genetic_correlation = new_correlation
 
-        return requests
-
     async def parse_requests(self, bucket: IHTTPBucket) -> None:
         for query_heuristic in self._queries_heuristics:
-            for key, detector in query_heuristic.genetic_correlation.items():
-                if await detector(bucket.get(key)):
+            for key, detectors in query_heuristic.genetic_correlation.items():
+                client_response = bucket.get(key)
 
-                    self.add_score(query_heuristic.__engine__, query_heuristic)
+                if not isinstance(detectors, list):
+                    detectors = [detectors]
+
+                for detector in detectors:
+                    if await detector(client_response):
+                        self.add_score(query_heuristic.__engine__, query_heuristic)
 
     def add_score(self, engine: GraphQLEngine, cls: object) -> None:
         if engine not in self._candidates:
@@ -58,7 +59,7 @@ class HeuristicsManager(IHeuristicsManager):
         self._candidates[engine] += cls.score * cls.score_factor
 
     def display_results(self) -> None:
-        self._logger.debug('Heuristics results:')
+        self._logger.debug('Pushing heuristics results...')
         for engine, score in self._candidates.items():
             self._logger.debug(f'{engine.name.capitalize()}: {score} pts')
 
@@ -69,7 +70,12 @@ class HeuristicsManager(IHeuristicsManager):
         If any, the highest confidence will be returned.
         """
 
-        candidate = sorted(self._candidates)[-1].value if self._candidates else None
+        sorted_candidates = sorted(
+            self._candidates,
+            reverse=True,
+            key=lambda x: self._candidates[x],
+        )
+        candidate = sorted_candidates[0] if self._candidates else None
 
-        self._logger.info(f'Best candidate: \x1b[31;20m{candidate}\x1b[0m')
+        self._logger.info(f'Best candidate: {candidate.value if candidate else "None"}')
         return candidate
