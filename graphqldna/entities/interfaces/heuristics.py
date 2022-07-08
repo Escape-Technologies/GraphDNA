@@ -8,13 +8,12 @@ from typing import Callable
 
 from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces import IHTTPBucket
-from graphqldna.entities.interfaces.dna import IRequest
 
 
 class IHeuristic(ABC):
 
     score: int = 100
-    score_factor: int
+    score_factor: int = 1
 
     def verify(self) -> bool:
         raise NotImplementedError
@@ -22,7 +21,6 @@ class IHeuristic(ABC):
 
 class IGQLQuery(IHeuristic):
 
-    score_factor = 1
     genetic_correlation: dict[str, Callable]
 
 
