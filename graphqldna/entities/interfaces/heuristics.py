@@ -40,11 +40,26 @@ class IHeuristicsManager(ABC):
         ...
 
     @abstractmethod
-    async def enqueue_requests(self, url: str, bucket: IHTTPBucket) -> None:
+    async def enqueue_requests(
+        self,
+        url: str,
+        bucket: IHTTPBucket,
+    ) -> None:
         ...
 
     @abstractmethod
-    async def parse_requests(self, bucket: IHTTPBucket) -> None:
+    async def parse_requests(
+        self,
+        bucket: IHTTPBucket,
+    ) -> None:
+        ...
+
+    @abstractmethod
+    def add_score(
+        self,
+        engine: GraphQLEngine,
+        cls: object,
+    ) -> None:
         ...
 
     @abstractmethod

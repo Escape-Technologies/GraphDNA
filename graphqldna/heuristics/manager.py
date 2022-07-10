@@ -10,8 +10,10 @@ from graphqldna.heuristics.gql_queries import import_gql_queries
 
 class HeuristicsManager(IHeuristicsManager):
 
-    def __init__(self, logger: logging.Logger) -> None:
-
+    def __init__(
+        self,
+        logger: logging.Logger,
+    ) -> None:
         self._logger = logger
         self._candidates = {}
         self._queries_heuristics = []
@@ -19,7 +21,11 @@ class HeuristicsManager(IHeuristicsManager):
     def load(self) -> None:
         self._queries_heuristics = import_gql_queries()
 
-    async def enqueue_requests(self, url: str, bucket: IHTTPBucket) -> None:
+    async def enqueue_requests(
+        self,
+        url: str,
+        bucket: IHTTPBucket,
+    ) -> None:
         for query_heuristic in self._queries_heuristics:
 
             new_correlation = {}
@@ -40,7 +46,10 @@ class HeuristicsManager(IHeuristicsManager):
 
             query_heuristic.genetics = new_correlation
 
-    async def parse_requests(self, bucket: IHTTPBucket) -> None:
+    async def parse_requests(
+        self,
+        bucket: IHTTPBucket,
+    ) -> None:
         for query_heuristic in self._queries_heuristics:
             for key, detectors in query_heuristic.genetics.items():
                 client_response = bucket.get(key)
@@ -52,7 +61,11 @@ class HeuristicsManager(IHeuristicsManager):
                     if await detector(client_response):
                         self.add_score(query_heuristic.__engine__, query_heuristic)
 
-    def add_score(self, engine: GraphQLEngine, cls: object) -> None:
+    def add_score(
+        self,
+        engine: GraphQLEngine,
+        cls: object,
+    ) -> None:
         if engine not in self._candidates:
             self._candidates[engine] = 0
 
@@ -60,6 +73,7 @@ class HeuristicsManager(IHeuristicsManager):
 
     def display_results(self) -> None:
         self._logger.debug('Pushing heuristics results...')
+
         for engine, score in self._candidates.items():
             self._logger.debug(f'{engine.name.capitalize()}: {score} pts')
 
