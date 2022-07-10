@@ -24,12 +24,16 @@ class IRequest:
         self.method = method or 'GET'
         self.kwargs = kwargs or {}
 
+        # Disable all redirects
+        self.kwargs['allow_redirects'] = False
+
 
 class IHTTPBucket(ABC):
 
     _headers: dict[str, str]
     _store: dict[str, aiohttp.ClientResponse | asyncio.Task]
     _queue: list[asyncio.Task]
+    _base_url: str
 
     _session: aiohttp.ClientSession | None
     _logger: logging.Logger
