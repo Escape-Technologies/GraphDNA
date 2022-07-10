@@ -16,12 +16,14 @@ class HTTPBucket(IHTTPBucket):
     def __init__(
         self,
         logger: logging.Logger,
+        base_url: str,
         headers: dict[str, str] | None,
     ) -> None:
         self._store = {}
         self._queue = []
         self._session = None
 
+        self._base_url = base_url
         self._headers = headers or {}
         self._logger = logger
 
@@ -54,6 +56,12 @@ class HTTPBucket(IHTTPBucket):
         if not self._session:
             self._session = await self.open_session()
 
+        if '%%base_url%%' in request.url:
+            request.url = request.url.replace(
+                '%%base_url%%',
+                self._base_url,
+            )
+
         self._store[key] = await self._session.request(
             request.method,
             request.url,
@@ -67,7 +75,7 @@ class HTTPBucket(IHTTPBucket):
             await task
 
     async def open_session(self) -> aiohttp.ClientSession:
-        self._session = aiohttp.ClientSession(headers=self._headers, )
+        self._session = aiohttp.ClientSession(headers=self._headers)
         return self._session
 
     async def close_session(self) -> None:

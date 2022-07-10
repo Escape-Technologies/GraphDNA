@@ -56,6 +56,16 @@ class IHeuristicManager(ABC):
         ...
 
 
+class IGQLQueriesManager(IHeuristicManager):
+
+    _heuristics: list[IGQLQuery]
+
+
+class IWebPropertiesManager(IHeuristicManager):
+
+    ...
+
+
 class IHeuristicsManager(ABC):
 
     _logger: logging.Logger

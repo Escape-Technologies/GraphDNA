@@ -44,12 +44,16 @@ class GraphQLDNA(IGraphQLDNA):
 
         self._url = url
         self._logger = logger or setup_logger()
-        self._http_bucket = HTTPBucket(self._logger, headers)
+        self._http_bucket = HTTPBucket(
+            self._logger,
+            self._url,
+            headers,
+        )
 
         self._logger.info(f'Initializing GraphQLDNA for {url}.')
 
     async def run(self) -> GraphQLEngine | None:
-        """Run a DNA test."""
+        """Manage DNA test flow."""
 
         heuristics = HeuristicsManager(self._logger)
         heuristics.load()

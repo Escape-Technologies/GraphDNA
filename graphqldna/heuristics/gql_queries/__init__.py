@@ -1,8 +1,8 @@
-from typing import Any, AsyncGenerator, Coroutine
+from typing import AsyncGenerator
 
 from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
-from graphqldna.entities.interfaces.heuristics import IGQLQuery, IHeuristicManager
+from graphqldna.entities.interfaces.heuristics import IGQLQueriesManager, IGQLQuery
 from graphqldna.heuristics.utils import import_heuristics
 
 
@@ -16,9 +16,7 @@ def find_engine(
     raise ValueError(f'Unknown engine `{engine}`, possibilities: {possibilities}')
 
 
-class GQLQueriesManager(IHeuristicManager):
-
-    _heuristics: list[IGQLQuery]
+class GQLQueriesManager(IGQLQueriesManager):
 
     def __init__(self) -> None:
         self._heuristics = []
