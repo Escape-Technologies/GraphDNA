@@ -7,6 +7,7 @@ from typing import Any, AsyncGenerator
 
 from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces import IHTTPBucket
+from graphqldna.entities.interfaces.dna import IRequest
 
 
 class IHeuristic(ABC):
@@ -21,6 +22,11 @@ class IHeuristic(ABC):
 class IGQLQuery(IHeuristic):
 
     genetics: dict[str, functools.partial | list[functools.partial]]
+
+
+class IWebProperty(IHeuristic):
+
+    requests: list[IRequest]
 
 
 class IAppProperties(IHeuristic):
