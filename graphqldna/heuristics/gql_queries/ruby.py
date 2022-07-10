@@ -1,9 +1,11 @@
+# github_directory: rmosolgo/graphql-ruby, stars: 5088, last_update: 2022-07-10
 from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class Ruby(IGQLQuery):
 
+    score_factor = 0.58
     genetics = {
         'query @deprecated { __typename }': in_response_text('\'@deprecated\' can\'t be applied to queries'),
         'query @skip { __typename }': in_response_text('\'@skip\' can\'t be applied to queries (allowed: fields, fragment spreads, inline fragments)'),

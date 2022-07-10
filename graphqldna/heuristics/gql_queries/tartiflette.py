@@ -1,9 +1,11 @@
+# github_directory: tartiflette/tartiflette, stars: 823, last_update: 2022-07-10
 from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class Tartiflette(IGQLQuery):
 
+    score_factor = 0.51
     genetics = {
         'query @a { __typename }': in_response_text('Unknow Directive < @a >.'),
         'query @skip { __typename }': in_response_text('Unknow Directive < @a >.'),

@@ -1,9 +1,11 @@
+# github_directory: graphql-java/graphql-java, stars: 5539, last_update: 2022-07-10
 from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class GraphQLJava(IGQLQuery):
 
+    score_factor = 0.59
     genetics = {
         '':
             in_response_text('Invalid Syntax : offending token \'<EOF>\''),

@@ -1,9 +1,11 @@
+# github_directory: hasura/graphql-engine, stars: 27374, last_update: 2022-07-10
 from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class Hasura(IGQLQuery):
 
+    score_factor = 0.95
     genetics = {
         'query @cached {__typename}': in_response_text('query_root'),
         'query @skip {__typename}': in_response_text('directive \\"skip\\" is not allowed on a query'),

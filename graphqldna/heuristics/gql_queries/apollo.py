@@ -1,9 +1,11 @@
+# github_directory: apollographql/apollo-server, stars: 12730, last_update: 2022-07-10
 from graphqldna.detectors import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class Apollo(IGQLQuery):
 
+    score_factor = 0.71
     genetics = {
         'query @deprecated { __typename }':
             in_response_text([
