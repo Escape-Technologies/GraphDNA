@@ -12,17 +12,23 @@ from graphqldna.heuristics import HeuristicsManager
 from graphqldna.logger import setup_logger
 
 
-def detect_engine(url: str) -> GraphQLEngine | None:
+def detect_engine(
+    url: str,
+    headers: dict[str, str] | None = None,
+) -> GraphQLEngine | None:
     """Manage the engine detection flow."""
 
-    dna = GraphQLDNA(url)
+    dna = GraphQLDNA(url, headers)
     return asyncio.run(dna.run())
 
 
-async def detect_engine_async(url: str) -> GraphQLEngine | None:
+async def detect_engine_async(
+    url: str,
+    headers: dict[str, str] | None = None,
+) -> GraphQLEngine | None:
     """Manage the engine detection flow asyncronously."""
 
-    dna = GraphQLDNA(url)
+    dna = GraphQLDNA(url, headers)
     return await dna.run()
 
 
@@ -36,12 +42,14 @@ class HTTPBucket(IHTTPBucket):
     def __init__(
         self,
         logger: logging.Logger,
+        headers: dict[str, str] | None,
     ) -> None:
-        self._logger = logger
-
         self._store = {}
         self._queue = []
         self._session = None
+
+        self._headers = headers or {}
+        self._logger = logger
 
     async def put(
         self,
@@ -60,7 +68,6 @@ class HTTPBucket(IHTTPBucket):
         self,
         key: str,
     ) -> aiohttp.ClientResponse:
-
         value = self._store.get(key)
         assert isinstance(value, aiohttp.ClientResponse)
         return value
@@ -70,7 +77,6 @@ class HTTPBucket(IHTTPBucket):
         request: IRequest,
         key: str,
     ) -> None:
-
         if not self._session:
             self._session = await self.open_session()
 
@@ -87,14 +93,15 @@ class HTTPBucket(IHTTPBucket):
             await task
 
     async def open_session(self) -> aiohttp.ClientSession:
-        self._session = aiohttp.ClientSession()
-
+        self._session = aiohttp.ClientSession(headers=self._headers, )
         return self._session
 
     async def close_session(self) -> None:
-        if self._session:
-            await self._session.close()
-            self._session = None
+        if not self._session:
+            return
+
+        await self._session.close()
+        self._session = None
 
 
 class GraphQLDNA(IGraphQLDNA):
@@ -104,13 +111,14 @@ class GraphQLDNA(IGraphQLDNA):
     def __init__(
         self,
         url: str,
+        headers: dict[str, str] | None = None,
         logger: logging.Logger | None = None,
     ) -> None:
         """Init class."""
 
         self._url = url
         self._logger = logger or setup_logger()
-        self._http_bucket = HTTPBucket(self._logger)
+        self._http_bucket = HTTPBucket(self._logger, headers)
 
         self._logger.info(f'Initializing GraphQLDNA for {url}.')
 
