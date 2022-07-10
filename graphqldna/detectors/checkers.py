@@ -26,6 +26,7 @@ def in_section(
     section: str,
     data: str | list[str],
 ) -> functools.partial:
+
     if isinstance(data, str):
         data = [data]
 
