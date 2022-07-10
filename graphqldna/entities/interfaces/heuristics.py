@@ -1,10 +1,9 @@
-# pylint: disable=missing-function-docstring,missing-class-docstring, too-few-public-methods
-
 """Manage the heuristics interfaces."""
 
 import functools
 import logging
 from abc import ABC, abstractmethod
+from typing import Any, AsyncGenerator
 
 from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces import IHTTPBucket
@@ -29,11 +28,34 @@ class IAppProperties(IHeuristic):
     score_factor = 1.2
 
 
+class IHeuristicManager(ABC):
+
+    @abstractmethod
+    async def enqueue_requests(
+        self,
+        url: str,
+        bucket: IHTTPBucket,
+    ) -> None:
+        ...
+
+    @abstractmethod
+    def load(self) -> None:
+        ...
+
+    @abstractmethod
+    async def parse_requests(
+        self,
+        bucket: IHTTPBucket,
+    ) -> AsyncGenerator[Any, None]:
+        ...
+
+
 class IHeuristicsManager(ABC):
 
     _logger: logging.Logger
     _candidates: dict[GraphQLEngine, int]
-    _queries_heuristics: list[IGQLQuery]
+
+    _gql_queries_manager: IHeuristicManager
 
     @abstractmethod
     def load(self) -> None:
@@ -57,8 +79,8 @@ class IHeuristicsManager(ABC):
     @abstractmethod
     def add_score(
         self,
-        engine: GraphQLEngine,
         cls: object,
+        engine: GraphQLEngine,
     ) -> None:
         ...
 

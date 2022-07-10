@@ -3,9 +3,9 @@
 import logging
 
 from graphqldna.entities.engines import GraphQLEngine
-from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
+from graphqldna.entities.interfaces.dna import IHTTPBucket
 from graphqldna.entities.interfaces.heuristics import IHeuristicsManager
-from graphqldna.heuristics.gql_queries import import_gql_queries
+from graphqldna.heuristics.gql_queries import GQLQueriesManager
 
 
 class HeuristicsManager(IHeuristicsManager):
@@ -16,55 +16,30 @@ class HeuristicsManager(IHeuristicsManager):
     ) -> None:
         self._logger = logger
         self._candidates = {}
-        self._queries_heuristics = []
+
+        self._gql_queries_manager = GQLQueriesManager()
 
     def load(self) -> None:
-        self._queries_heuristics = import_gql_queries()
+        self._gql_queries_manager.load()
 
     async def enqueue_requests(
         self,
         url: str,
         bucket: IHTTPBucket,
     ) -> None:
-        for query_heuristic in self._queries_heuristics:
-
-            new_correlation = {}
-
-            for key, value in query_heuristic.genetics.items():
-                req = IRequest(url, 'POST', {
-                    'json': {
-                        'query': key,
-                    },
-                    'headers': {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                req_hash = bucket.hash(req)
-                await bucket.put(req, req_hash)
-
-                new_correlation[req_hash] = value
-
-            query_heuristic.genetics = new_correlation
+        await self._gql_queries_manager.enqueue_requests(url, bucket)
 
     async def parse_requests(
         self,
         bucket: IHTTPBucket,
     ) -> None:
-        for query_heuristic in self._queries_heuristics:
-            for key, detectors in query_heuristic.genetics.items():
-                client_response = bucket.get(key)
-
-                if not isinstance(detectors, list):
-                    detectors = [detectors]
-
-                for detector in detectors:
-                    if await detector(client_response):
-                        self.add_score(query_heuristic.__engine__, query_heuristic)
+        async for match, engine in self._gql_queries_manager.parse_requests(bucket):
+            self.add_score(match, engine)
 
     def add_score(
         self,
-        engine: GraphQLEngine,
         cls: object,
+        engine: GraphQLEngine,
     ) -> None:
         if engine not in self._candidates:
             self._candidates[engine] = 0
