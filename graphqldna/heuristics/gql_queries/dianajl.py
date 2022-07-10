@@ -1,9 +1,9 @@
-from graphqldna.detectors.checkers import is_present_in_textual_response
+from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class DianaJl(IGQLQuery):
 
     genetics = {
-        'query { __typename }': is_present_in_textual_response('Syntax Error GraphQL request (1:1) Unexpected Name \\"queryy\\"'),
+        'query { __typename }': in_response_text('Syntax Error GraphQL request (1:1) Unexpected Name \\"queryy\\"'),
     }

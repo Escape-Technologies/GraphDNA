@@ -4,7 +4,7 @@ import json
 import aiohttp
 
 
-def is_present_in_textual_response(data: str | list[str]) -> functools.partial:
+def in_response_text(data: str | list[str]) -> functools.partial:
 
     if isinstance(data, str):
         data = [data]
@@ -22,7 +22,7 @@ def is_present_in_textual_response(data: str | list[str]) -> functools.partial:
     return functools.partial(__internal, data)
 
 
-def is_present_in_section(
+def in_section(
     section: str,
     data: str | list[str],
 ) -> functools.partial:

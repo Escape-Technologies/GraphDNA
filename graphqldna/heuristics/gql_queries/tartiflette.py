@@ -1,13 +1,13 @@
-from graphqldna.detectors.checkers import is_present_in_textual_response
+from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class Tartiflette(IGQLQuery):
 
     genetics = {
-        'query @a { __typename }': is_present_in_textual_response('Unknow Directive < @a >.'),
-        'query @skip { __typename }': is_present_in_textual_response('Unknow Directive < @a >.'),
-        'query { gqldna }': is_present_in_textual_response('Field gqldna doesn\'t exist on Query'),
-        'query { __typename @deprecated }': is_present_in_textual_response('Directive < @deprecated > is not used in a valid location.'),
-        'queryy { __typename }': is_present_in_textual_response('syntax error, unexpected IDENTIFIER'),
+        'query @a { __typename }': in_response_text('Unknow Directive < @a >.'),
+        'query @skip { __typename }': in_response_text('Unknow Directive < @a >.'),
+        'query { gqldna }': in_response_text('Field gqldna doesn\'t exist on Query'),
+        'query { __typename @deprecated }': in_response_text('Directive < @deprecated > is not used in a valid location.'),
+        'queryy { __typename }': in_response_text('syntax error, unexpected IDENTIFIER'),
     }

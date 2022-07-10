@@ -1,4 +1,4 @@
-from graphqldna.detectors.checkers import is_present_in_section, is_present_in_textual_response
+from graphqldna.detectors.checkers import in_response_text, in_section
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
@@ -6,7 +6,7 @@ class Lighthouse(IGQLQuery):
 
     genetics = {
         'query {__typename @include(if: falsee)}': [
-            is_present_in_textual_response('Internal server error'),
-            is_present_in_section('category', 'internal'),
+            in_response_text('Internal server error'),
+            in_section('category', 'internal'),
         ],
     }
