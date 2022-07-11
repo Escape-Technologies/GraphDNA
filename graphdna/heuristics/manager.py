@@ -56,7 +56,7 @@ class HeuristicsManager(IHeuristicsManager):
         self._logger.debug('Pushing heuristics results...')
 
         for engine, score in self._candidates.items():
-            self._logger.debug(f'{engine.name.capitalize()}: {score} pts')
+            self._logger.debug(f'{engine.name.capitalize()}: {round(score, 2)} pts')
 
     @property
     def best_candidate(self) -> GraphQLEngine | None:

@@ -20,7 +20,7 @@ class JSONFormat(json_log_formatter.JSONFormatter):
         return super().json_record(message, extra, record)
 
 
-def install_logger() -> None:
+def install_logger(logger: logging.Logger) -> None:
     """Install logger."""
 
     handlers = {
@@ -32,8 +32,8 @@ def install_logger() -> None:
 
     log_format = os.getenv('LOG_FORMAT', 'console')
 
-    logging.getLogger().addHandler(handlers[log_format])
-    logging.getLogger().setLevel(logging.DEBUG)
+    logger.addHandler(handlers[log_format])
+    logger.setLevel(logging.DEBUG)
 
     # Ignore asyncio debug logs
     logging.getLogger('asyncio').setLevel(logging.ERROR)
@@ -45,7 +45,7 @@ def setup_logger(name: str | None = None) -> logging.Logger:
     name = name or 'graphdna'
     logger = logging.getLogger(name)
 
-    if not logging.getLogger().hasHandlers():
-        install_logger()
+    if not logger.hasHandlers():
+        install_logger(logger)
 
     return logger
