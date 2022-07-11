@@ -4,6 +4,17 @@ from pkgutil import iter_modules
 from types import ModuleType
 
 
+def find_engine(
+    engine: str,
+    possibilities: list[str],
+) -> str:
+    for p in possibilities:
+        if engine == p.lower():
+            return p
+
+    raise ValueError(f'Unknown engine `{engine}`, possibilities: {possibilities}')
+
+
 def import_heuristics(
     pkg_file: str,
     pkg_name: str,

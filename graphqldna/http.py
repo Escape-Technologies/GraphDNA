@@ -31,15 +31,17 @@ class HTTPBucket(IHTTPBucket):
     async def put(
         self,
         req: IRequest,
-        key: str,
-    ) -> None:
+    ) -> str:
         if not self._session:
             await self.open_session()
 
+        key = self.hash(req)
         if key not in self._store:
             task = asyncio.create_task(self.send_request(req, key))
             self._store[key] = task
             self._queue.append(task)
+
+        return key
 
     def get(
         self,
@@ -68,6 +70,9 @@ class HTTPBucket(IHTTPBucket):
                 '%%url%%',
                 self._url,
             )
+
+        if self._logger.level < logging.DEBUG:
+            self._logger.debug(f'[{request.method}] {request.url} {request.kwargs}')
 
         self._store[key] = await self._session.request(
             request.method,

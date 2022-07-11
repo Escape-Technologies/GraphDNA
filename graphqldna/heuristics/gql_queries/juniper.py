@@ -8,5 +8,5 @@ class Juniper(IGQLQuery):
     score_factor = 0.58
     genetics = {
         '': in_response_text('Unexpected end of input'),
-        'queryy  {__typename}': in_response_text('Unexpected \\"queryy\\"'),
+        'queryy { __typename }': in_response_text('Unexpected \\"queryy\\"'),
     }

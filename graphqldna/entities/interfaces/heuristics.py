@@ -31,11 +31,6 @@ class IWebProperty(IHeuristic):
     requests: list[tuple[IRequest, EvalMethods]]
 
 
-class IAppProperties(IHeuristic):
-
-    score_factor = 1.2
-
-
 class IHeuristicManager(ABC):
 
     _logger: logging.Logger
@@ -43,7 +38,6 @@ class IHeuristicManager(ABC):
     @abstractmethod
     async def enqueue_requests(
         self,
-        url: str,
         bucket: IHTTPBucket,
     ) -> None:
         ...
@@ -56,7 +50,7 @@ class IHeuristicManager(ABC):
     async def parse_requests(
         self,
         bucket: IHTTPBucket,
-    ) -> AsyncGenerator[Any, None]:
+    ) -> AsyncGenerator[tuple[Any, GraphQLEngine], None]:
         ...
 
 
@@ -67,7 +61,7 @@ class IGQLQueriesManager(IHeuristicManager):
 
 class IWebPropertiesManager(IHeuristicManager):
 
-    ...
+    _heuristics: list[IWebProperty]
 
 
 class IHeuristicsManager(ABC):

@@ -23,19 +23,23 @@ class HeuristicsManager(IHeuristicsManager):
 
     def load(self) -> None:
         self._gql_queries_manager.load()
+        self._web_properties_manager.load()
 
     async def enqueue_requests(
         self,
         url: str,
         bucket: IHTTPBucket,
     ) -> None:
-        await self._gql_queries_manager.enqueue_requests(url, bucket)
+        await self._gql_queries_manager.enqueue_requests(bucket)
+        await self._web_properties_manager.enqueue_requests(bucket)
 
     async def parse_requests(
         self,
         bucket: IHTTPBucket,
     ) -> None:
         async for match, engine in self._gql_queries_manager.parse_requests(bucket):
+            self.add_score(match, engine)
+        async for match, engine in self._web_properties_manager.parse_requests(bucket):
             self.add_score(match, engine)
 
     def add_score(

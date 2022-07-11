@@ -29,6 +29,7 @@ class GraphQLEngine(Enum):
     QGLGEN = 'GQLGen'
     RUBY = 'Ruby'
     SANGRIA = 'Sangria'
+    SHOPIFY = 'Shopify'
     STEPZEN = 'Stepzen'
     STRAWBERRY = 'Strawberry'
     TARTIFLETTE = 'Tartiflette'

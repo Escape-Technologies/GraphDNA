@@ -54,8 +54,7 @@ class IHTTPBucket(ABC):
     async def put(
         self,
         req: IRequest,
-        key: str,
-    ) -> None:
+    ) -> str:
         ...
 
     @abstractmethod
