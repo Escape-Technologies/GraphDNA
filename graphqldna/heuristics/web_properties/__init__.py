@@ -4,7 +4,7 @@ from typing import AsyncGenerator, cast
 import aiohttp
 
 from graphqldna.entities.engines import GraphQLEngine
-from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
+from graphqldna.entities.interfaces.dna import IHTTPBucket
 from graphqldna.entities.interfaces.heuristics import EvalMethods, IWebPropertiesManager, IWebProperty
 from graphqldna.heuristics.utils import find_engine, import_heuristics
 
