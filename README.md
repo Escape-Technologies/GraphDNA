@@ -3,7 +3,9 @@
 GraphDNA is a tool that uses multiple heuristics to fingerprint GraphQL endpoints.
 
 ![Banner](docs/banner.png)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/GraphDNA) ![PyPI - Downloads](https://img.shields.io/pypi/dm/GraphDNA)
+
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/GraphDNA)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/GraphDNA)
 
 ## Getting Started
 
