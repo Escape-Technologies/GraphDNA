@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "graphdna"
-version = "0.0.3"
+version = "0.1.0"
 description = "Fast and powerful GraphQL engine fingerprinting tool"
 authors = ["Escape Technologies SAS <ping@escape.tech>"]
 maintainers = [
@@ -34,7 +34,7 @@ omit = [
 asyncio_mode = 'strict'
 
 [tool.poetry.dependencies]
-python = ">=3.7,<3.11"
+python = ">=3.7,<=3.11"
 JSON-log-formatter = "^0.5.1"
 aiohttp = {extras = ["speedups"], version = "^3.8.1"}
 
