@@ -19,6 +19,7 @@ class HeuristicsManager(IHeuristicsManager):
         self._candidates = {}
 
         self._gql_queries_manager = GQLQueriesManager(self._logger)
+        self._web_properties_manager = WebPropertiesManager(self._logger)
 
     def load(self) -> None:
         self._gql_queries_manager.load()
@@ -66,6 +67,7 @@ class HeuristicsManager(IHeuristicsManager):
             key=lambda x: self._candidates[x],
         )
         candidate = sorted_candidates[0] if self._candidates else None
+        candidate_literal = candidate.value if candidate else 'None, are you sure this is a GraphQL endpoint?'
+        self._logger.info(f'Best candidate: {candidate_literal}')
 
-        self._logger.info(f'Best candidate: {candidate.value if candidate else "None, are you sure this is a GraphQL endpoint?"}')
         return candidate
