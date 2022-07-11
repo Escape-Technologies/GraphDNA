@@ -36,6 +36,8 @@ class IAppProperties(IHeuristic):
 
 class IHeuristicManager(ABC):
 
+    _logger: logging.Logger
+
     @abstractmethod
     async def enqueue_requests(
         self,

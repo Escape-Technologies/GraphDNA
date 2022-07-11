@@ -13,20 +13,30 @@ from graphqldna.logger import setup_logger
 def detect_engine(
     url: str,
     headers: dict[str, str] | None = None,
+    logger: logging.Logger | None = None,
 ) -> GraphQLEngine | None:
     """Manage the engine detection flow."""
 
-    dna = GraphQLDNA(url, headers)
+    dna = GraphQLDNA(
+        url,
+        headers=headers,
+        logger=logger,
+    )
     return asyncio.run(dna.run())
 
 
 async def detect_engine_async(
     url: str,
     headers: dict[str, str] | None = None,
+    logger: logging.Logger | None = None,
 ) -> GraphQLEngine | None:
     """Manage the engine detection flow asyncronously."""
 
-    dna = GraphQLDNA(url, headers)
+    dna = GraphQLDNA(
+        url,
+        headers=headers,
+        logger=logger,
+    )
     return await dna.run()
 
 

@@ -1,4 +1,7 @@
+import logging
 from typing import AsyncGenerator
+
+import aiohttp
 
 from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
@@ -18,8 +21,9 @@ def find_engine(
 
 class GQLQueriesManager(IGQLQueriesManager):
 
-    def __init__(self) -> None:
+    def __init__(self, logger: logging.Logger) -> None:
         self._heuristics = []
+        self._logger = logger
 
     async def enqueue_requests(
         self,
@@ -74,7 +78,11 @@ class GQLQueriesManager(IGQLQueriesManager):
                     detectors = [detectors]
 
                 for detector in detectors:
-                    if not await detector(client_response):
+                    try:
+                        if not await detector(client_response):
+                            continue
+                    except aiohttp.client_exceptions.ContentTypeError:
+                        self._logger.error('Response is not JSON. Are you sure this is a GraphQL endpoint?')
                         continue
 
                     yield heuristic, heuristic.__engine__

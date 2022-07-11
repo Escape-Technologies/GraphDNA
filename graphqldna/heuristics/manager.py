@@ -17,7 +17,7 @@ class HeuristicsManager(IHeuristicsManager):
         self._logger = logger
         self._candidates = {}
 
-        self._gql_queries_manager = GQLQueriesManager()
+        self._gql_queries_manager = GQLQueriesManager(self._logger)
 
     def load(self) -> None:
         self._gql_queries_manager.load()
@@ -66,5 +66,5 @@ class HeuristicsManager(IHeuristicsManager):
         )
         candidate = sorted_candidates[0] if self._candidates else None
 
-        self._logger.info(f'Best candidate: {candidate.value if candidate else "None"}')
+        self._logger.info(f'Best candidate: {candidate.value if candidate else "None, are you sure this is a GraphQL endpoint?"}')
         return candidate
