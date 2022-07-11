@@ -9,6 +9,8 @@ from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces import IHTTPBucket
 from graphqldna.entities.interfaces.dna import IRequest
 
+EvalMethods = functools.partial | list[functools.partial]
+
 
 class IHeuristic(ABC):
 
@@ -21,12 +23,12 @@ class IHeuristic(ABC):
 
 class IGQLQuery(IHeuristic):
 
-    genetics: dict[str, functools.partial | list[functools.partial]]
+    genetics: dict[str, EvalMethods]
 
 
 class IWebProperty(IHeuristic):
 
-    requests: list[IRequest]
+    requests: list[tuple[IRequest, EvalMethods]]
 
 
 class IAppProperties(IHeuristic):

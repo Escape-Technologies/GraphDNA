@@ -46,3 +46,21 @@ def in_section(
         return any(text in section_text for text in data)
 
     return functools.partial(__internal, section, data)
+
+
+def has_json_key(sections: str | list[str]) -> functools.partial:
+
+    if isinstance(sections, str):
+        sections = [sections]
+
+    async def __internal(
+        sections: list[str],
+        response: aiohttp.ClientResponse = None,
+    ) -> bool:
+
+        assert response, 'Response is required.'
+
+        response_json = await response.json()
+        return all(section in response_json for section in sections)
+
+    return functools.partial(__internal, sections)
