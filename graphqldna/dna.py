@@ -3,98 +3,41 @@
 import asyncio
 import logging
 
-import aiohttp
-
 from graphqldna.entities import GraphQLEngine
 from graphqldna.entities.interfaces import IGraphQLDNA
-from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
 from graphqldna.heuristics import HeuristicsManager
+from graphqldna.http import HTTPBucket
 from graphqldna.logger import setup_logger
 
 
-def detect_engine(url: str) -> GraphQLEngine | None:
+def detect_engine(
+    url: str,
+    headers: dict[str, str] | None = None,
+    logger: logging.Logger | None = None,
+) -> GraphQLEngine | None:
     """Manage the engine detection flow."""
 
-    dna = GraphQLDNA(url)
+    dna = GraphQLDNA(
+        url,
+        headers=headers,
+        logger=logger,
+    )
     return asyncio.run(dna.run())
 
 
-async def detect_engine_async(url: str) -> GraphQLEngine | None:
+async def detect_engine_async(
+    url: str,
+    headers: dict[str, str] | None = None,
+    logger: logging.Logger | None = None,
+) -> GraphQLEngine | None:
     """Manage the engine detection flow asyncronously."""
 
-    dna = GraphQLDNA(url)
+    dna = GraphQLDNA(
+        url,
+        headers=headers,
+        logger=logger,
+    )
     return await dna.run()
-
-
-class HTTPBucket(IHTTPBucket):
-
-    """Defines a HTTP Bucket, which store procedeed requests.
-
-    The goal is to send requests once.
-    """
-
-    def __init__(
-        self,
-        logger: logging.Logger,
-    ) -> None:
-        self._logger = logger
-
-        self._store = {}
-        self._queue = []
-        self._session = None
-
-    async def put(
-        self,
-        req: IRequest,
-        key: str,
-    ) -> None:
-        if not self._session:
-            await self.open_session()
-
-        if key not in self._store:
-            task = asyncio.create_task(self.send_request(req, key))
-            self._store[key] = task
-            self._queue.append(task)
-
-    def get(
-        self,
-        key: str,
-    ) -> aiohttp.ClientResponse:
-
-        value = self._store.get(key)
-        assert isinstance(value, aiohttp.ClientResponse)
-        return value
-
-    async def send_request(
-        self,
-        request: IRequest,
-        key: str,
-    ) -> None:
-
-        if not self._session:
-            self._session = await self.open_session()
-
-        self._store[key] = await self._session.request(
-            request.method,
-            request.url,
-            **request.kwargs,
-        )
-
-    async def consume_bucket(self) -> None:
-        self._logger.info(f'Consuming bucket of {len(self._queue)} requests.')
-
-        for task in self._queue:
-            await task
-
-    async def open_session(self) -> aiohttp.ClientSession:
-        self._session = aiohttp.ClientSession()
-
-        return self._session
-
-    async def close_session(self) -> None:
-        if self._session:
-            await self._session.close()
-            self._session = None
 
 
 class GraphQLDNA(IGraphQLDNA):
@@ -104,18 +47,23 @@ class GraphQLDNA(IGraphQLDNA):
     def __init__(
         self,
         url: str,
+        headers: dict[str, str] | None = None,
         logger: logging.Logger | None = None,
     ) -> None:
         """Init class."""
 
         self._url = url
         self._logger = logger or setup_logger()
-        self._http_bucket = HTTPBucket(self._logger)
+        self._http_bucket = HTTPBucket(
+            self._logger,
+            self._url,
+            headers,
+        )
 
         self._logger.info(f'Initializing GraphQLDNA for {url}.')
 
     async def run(self) -> GraphQLEngine | None:
-        """Run a DNA test."""
+        """Manage DNA test flow."""
 
         heuristics = HeuristicsManager(self._logger)
         heuristics.load()

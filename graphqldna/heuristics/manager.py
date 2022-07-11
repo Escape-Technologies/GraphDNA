@@ -3,56 +3,50 @@
 import logging
 
 from graphqldna.entities.engines import GraphQLEngine
-from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
+from graphqldna.entities.interfaces.dna import IHTTPBucket
 from graphqldna.entities.interfaces.heuristics import IHeuristicsManager
-from graphqldna.heuristics.gql_queries import import_gql_queries
+from graphqldna.heuristics.gql_queries import GQLQueriesManager
+from graphqldna.heuristics.web_properties import WebPropertiesManager
 
 
 class HeuristicsManager(IHeuristicsManager):
 
-    def __init__(self, logger: logging.Logger) -> None:
-
+    def __init__(
+        self,
+        logger: logging.Logger,
+    ) -> None:
         self._logger = logger
         self._candidates = {}
-        self._queries_heuristics = []
+
+        self._gql_queries_manager = GQLQueriesManager(self._logger)
+        self._web_properties_manager = WebPropertiesManager(self._logger)
 
     def load(self) -> None:
-        self._queries_heuristics = import_gql_queries()
+        self._gql_queries_manager.load()
+        self._web_properties_manager.load()
 
-    async def enqueue_requests(self, url: str, bucket: IHTTPBucket) -> None:
-        for query_heuristic in self._queries_heuristics:
+    async def enqueue_requests(
+        self,
+        url: str,
+        bucket: IHTTPBucket,
+    ) -> None:
+        await self._gql_queries_manager.enqueue_requests(bucket)
+        await self._web_properties_manager.enqueue_requests(bucket)
 
-            new_correlation = {}
+    async def parse_requests(
+        self,
+        bucket: IHTTPBucket,
+    ) -> None:
+        async for match, engine in self._gql_queries_manager.parse_requests(bucket):
+            self.add_score(match, engine)
+        async for match, engine in self._web_properties_manager.parse_requests(bucket):
+            self.add_score(match, engine)
 
-            for key, value in query_heuristic.genetics.items():
-                req = IRequest(url, 'POST', {
-                    'json': {
-                        'query': key,
-                    },
-                    'headers': {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                req_hash = bucket.hash(req)
-                await bucket.put(req, req_hash)
-
-                new_correlation[req_hash] = value
-
-            query_heuristic.genetics = new_correlation
-
-    async def parse_requests(self, bucket: IHTTPBucket) -> None:
-        for query_heuristic in self._queries_heuristics:
-            for key, detectors in query_heuristic.genetics.items():
-                client_response = bucket.get(key)
-
-                if not isinstance(detectors, list):
-                    detectors = [detectors]
-
-                for detector in detectors:
-                    if await detector(client_response):
-                        self.add_score(query_heuristic.__engine__, query_heuristic)
-
-    def add_score(self, engine: GraphQLEngine, cls: object) -> None:
+    def add_score(
+        self,
+        cls: object,
+        engine: GraphQLEngine,
+    ) -> None:
         if engine not in self._candidates:
             self._candidates[engine] = 0
 
@@ -60,6 +54,7 @@ class HeuristicsManager(IHeuristicsManager):
 
     def display_results(self) -> None:
         self._logger.debug('Pushing heuristics results...')
+
         for engine, score in self._candidates.items():
             self._logger.debug(f'{engine.name.capitalize()}: {score} pts')
 
@@ -76,6 +71,7 @@ class HeuristicsManager(IHeuristicsManager):
             key=lambda x: self._candidates[x],
         )
         candidate = sorted_candidates[0] if self._candidates else None
+        candidate_literal = candidate.value if candidate else 'None, are you sure this is a GraphQL endpoint?'
+        self._logger.info(f'Best candidate: {candidate_literal}')
 
-        self._logger.info(f'Best candidate: {candidate.value if candidate else "None"}')
         return candidate

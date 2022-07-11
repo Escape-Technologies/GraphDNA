@@ -1,15 +1,15 @@
 import logging
-from typing import AsyncGenerator
+from typing import AsyncGenerator, cast
 
 import aiohttp
 
 from graphqldna.entities.engines import GraphQLEngine
-from graphqldna.entities.interfaces.dna import IHTTPBucket, IRequest
-from graphqldna.entities.interfaces.heuristics import EvalMethods, IGQLQueriesManager, IGQLQuery
+from graphqldna.entities.interfaces.dna import IHTTPBucket
+from graphqldna.entities.interfaces.heuristics import EvalMethods, IWebPropertiesManager, IWebProperty
 from graphqldna.heuristics.utils import find_engine, import_heuristics
 
 
-class GQLQueriesManager(IGQLQueriesManager):
+class WebPropertiesManager(IWebPropertiesManager):
 
     def __init__(
         self,
@@ -25,7 +25,7 @@ class GQLQueriesManager(IGQLQueriesManager):
             __name__,
         )
 
-        heuristics: list[IGQLQuery] = []
+        heuristics: list[IWebProperty] = []
         for raw in raw_heuritics:
             engine = raw.__name__.split('.')[-1]
             engine = find_engine(engine, dir(raw))
@@ -40,41 +40,33 @@ class GQLQueriesManager(IGQLQueriesManager):
         self,
         bucket: IHTTPBucket,
     ) -> None:
-        # Refactor enqueue with a generator
         for heuristic in self._heuristics:
-            new_genetics: dict[str, EvalMethods] = {}
 
-            for query, _evals in heuristic.genetics.items():
-                req = IRequest('%%url%%', 'POST', {
-                    'json': {
-                        'query': query,
-                    },
-                    'headers': {
-                        'Content-Type': 'application/json',
-                    },
-                })
+            new_requests: list[tuple[str, EvalMethods]] = []
+            for req, _evals in heuristic.requests:
                 req_hash = await bucket.put(req)
-                new_genetics[req_hash] = _evals
 
-            heuristic.genetics = new_genetics
+                new_requests.append((req_hash, _evals))
+
+            heuristic.requests = new_requests  # type: ignore[assignment]
 
     async def parse_requests(  # type: ignore[override]
         self,
         bucket: IHTTPBucket,
-    ) -> AsyncGenerator[tuple[IGQLQuery, GraphQLEngine], None]:
+    ) -> AsyncGenerator[tuple[IWebProperty, GraphQLEngine], None]:
+
         for heuristic in self._heuristics:
-            for req_hash, _evals in heuristic.genetics.items():
-                client_response = bucket.get(req_hash)
+            for req_hash, _evals in heuristic.requests:
+                client_reponse = bucket.get(cast(str, req_hash))
 
                 if not isinstance(_evals, list):
                     _evals = [_evals]
 
                 for _eval in _evals:
                     try:
-                        if not await _eval(client_response):
+                        if not await _eval(client_reponse):
                             continue
                     except aiohttp.client_exceptions.ContentTypeError:
-                        self._logger.error('Response is not JSON. Are you sure this is a GraphQL endpoint?')
                         continue
 
                     yield heuristic, heuristic.__engine__

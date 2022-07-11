@@ -1,10 +1,15 @@
-from graphqldna.detectors.checkers import is_present_in_textual_response
+# github_directory: dgraph-io/dgraph, stars: 18204, last_update: 2022-07-10
+from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class DGraph(IGQLQuery):
 
+    score_factor = 0.8
     genetics = {
         'query { __typename }':
-            is_present_in_textual_response('Not resolving __typename. There\'s no GraphQL schema in Dgraph. Use the /admin API to add a GraphQL schema'),
+            in_response_text([
+                'Not resolving __typename. There\'s no GraphQL schema in Dgraph. Use the /admin API to add a GraphQL schema',
+                'Dgraph',
+            ]),
     }

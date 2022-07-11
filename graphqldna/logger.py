@@ -6,7 +6,6 @@ import os
 import json_log_formatter  # type: ignore[import]
 
 
-# pylint: disable=too-few-public-methods
 class JSONFormat(json_log_formatter.JSONFormatter):
 
     """Overload the json formater."""

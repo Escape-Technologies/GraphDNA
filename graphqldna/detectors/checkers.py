@@ -4,7 +4,7 @@ import json
 import aiohttp
 
 
-def is_present_in_textual_response(data: str | list[str]) -> functools.partial:
+def in_response_text(data: str | list[str]) -> functools.partial:
 
     if isinstance(data, str):
         data = [data]
@@ -22,10 +22,11 @@ def is_present_in_textual_response(data: str | list[str]) -> functools.partial:
     return functools.partial(__internal, data)
 
 
-def is_present_in_section(
+def in_section(
     section: str,
     data: str | list[str],
 ) -> functools.partial:
+
     if isinstance(data, str):
         data = [data]
 
@@ -45,3 +46,21 @@ def is_present_in_section(
         return any(text in section_text for text in data)
 
     return functools.partial(__internal, section, data)
+
+
+def has_json_key(sections: str | list[str]) -> functools.partial:
+
+    if isinstance(sections, str):
+        sections = [sections]
+
+    async def __internal(
+        sections: list[str],
+        response: aiohttp.ClientResponse = None,
+    ) -> bool:
+
+        assert response, 'Response is required.'
+
+        response_json = await response.json()
+        return all(section in response_json for section in sections)
+
+    return functools.partial(__internal, sections)

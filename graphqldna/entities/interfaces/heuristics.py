@@ -1,13 +1,15 @@
-# pylint: disable=missing-function-docstring,missing-class-docstring, too-few-public-methods
-
 """Manage the heuristics interfaces."""
 
 import functools
 import logging
 from abc import ABC, abstractmethod
+from typing import Any, AsyncGenerator
 
 from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces import IHTTPBucket
+from graphqldna.entities.interfaces.dna import IRequest
+
+EvalMethods = functools.partial | list[functools.partial]
 
 
 class IHeuristic(ABC):
@@ -21,30 +23,79 @@ class IHeuristic(ABC):
 
 class IGQLQuery(IHeuristic):
 
-    genetics: dict[str, functools.partial | list[functools.partial]]
+    genetics: dict[str, EvalMethods]
 
 
-class IAppProperties(IHeuristic):
+class IWebProperty(IHeuristic):
 
-    score_factor = 1.2
+    requests: list[tuple[IRequest, EvalMethods]]
 
 
-class IHeuristicsManager(ABC):
+class IHeuristicManager(ABC):
 
     _logger: logging.Logger
-    _candidates: dict[GraphQLEngine, int]
-    _queries_heuristics: list[IGQLQuery]
+
+    @abstractmethod
+    async def enqueue_requests(
+        self,
+        bucket: IHTTPBucket,
+    ) -> None:
+        ...
 
     @abstractmethod
     def load(self) -> None:
         ...
 
     @abstractmethod
-    async def enqueue_requests(self, url: str, bucket: IHTTPBucket) -> None:
+    async def parse_requests(
+        self,
+        bucket: IHTTPBucket,
+    ) -> AsyncGenerator[tuple[Any, GraphQLEngine], None]:
+        ...
+
+
+class IGQLQueriesManager(IHeuristicManager):
+
+    _heuristics: list[IGQLQuery]
+
+
+class IWebPropertiesManager(IHeuristicManager):
+
+    _heuristics: list[IWebProperty]
+
+
+class IHeuristicsManager(ABC):
+
+    _logger: logging.Logger
+    _candidates: dict[GraphQLEngine, int]
+
+    _gql_queries_manager: IHeuristicManager
+
+    @abstractmethod
+    def load(self) -> None:
         ...
 
     @abstractmethod
-    async def parse_requests(self, bucket: IHTTPBucket) -> None:
+    async def enqueue_requests(
+        self,
+        url: str,
+        bucket: IHTTPBucket,
+    ) -> None:
+        ...
+
+    @abstractmethod
+    async def parse_requests(
+        self,
+        bucket: IHTTPBucket,
+    ) -> None:
+        ...
+
+    @abstractmethod
+    def add_score(
+        self,
+        cls: object,
+        engine: GraphQLEngine,
+    ) -> None:
         ...
 
     @abstractmethod

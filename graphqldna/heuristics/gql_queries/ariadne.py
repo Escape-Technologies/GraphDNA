@@ -1,10 +1,12 @@
-from graphqldna.detectors import is_present_in_textual_response
+# github_directory: mirumee/ariadne, stars: 1789, last_update: 2022-07-10
+from graphqldna.detectors import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class Ariadne(IGQLQuery):
 
+    score_factor = 0.53
     genetics = {
-        '': is_present_in_textual_response('The query must be a string.'),
-        'query { __typename @abc }': is_present_in_textual_response('Unknown directive \'@abc\'.'),
+        '': in_response_text('The query must be a string.'),
+        'query { __typename @abc }': in_response_text('Unknown directive \'@abc\'.'),
     }

@@ -1,11 +1,13 @@
-from graphqldna.detectors.checkers import is_present_in_textual_response
+# github_directory: graphql-go/graphql, stars: 8636, last_update: 2022-07-10
+from graphqldna.detectors.checkers import in_response_text
 from graphqldna.entities.interfaces.heuristics import IGQLQuery
 
 
 class GraphQLGo(IGQLQuery):
 
+    score_factor = 0.64
     genetics = {
-        '': is_present_in_textual_response('Must provide an operation.'),
-        'query  { __typename {}': is_present_in_textual_response('Unexpected empty IN'),
-        'query { __typename }': is_present_in_textual_response('RootQuery'),
+        '': in_response_text('Must provide an operation.'),
+        'query  { __typename {}': in_response_text('Unexpected empty IN'),
+        'query { __typename }': in_response_text('RootQuery'),
     }

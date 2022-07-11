@@ -24,18 +24,25 @@ class IRequest:
         self.method = method or 'GET'
         self.kwargs = kwargs or {}
 
+        # Disable all redirects
+        self.kwargs['allow_redirects'] = False
+
 
 class IHTTPBucket(ABC):
 
-    _logger: logging.Logger
-
+    _headers: dict[str, str]
     _store: dict[str, aiohttp.ClientResponse | asyncio.Task]
     _queue: list[asyncio.Task]
+
+    _url: str
+    _base_url: str
+
     _session: aiohttp.ClientSession | None
+    _logger: logging.Logger
 
     @staticmethod
     def hash(request: IRequest) -> str:
-        key = hash(hash(request.url) + hash(request.method)) & 0xffffffff
+        key = hash(hash(request.url) + hash(request.method))
 
         data = 0
         for k, v in request.kwargs.items():
@@ -47,8 +54,7 @@ class IHTTPBucket(ABC):
     async def put(
         self,
         req: IRequest,
-        key: str,
-    ) -> None:
+    ) -> str:
         ...
 
     @abstractmethod
