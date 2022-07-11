@@ -1,15 +1,11 @@
-# GraphDNA ![PyPI](https://img.shields.io/pypi/v/GraphDNA)
+# GraphDNA ![PyPI](https://img.shields.io/pypi/v/GraphDNA) [![CI](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml) [![CD](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml)
 
 GraphDNA is a tool that uses multiple heuristics to fingerprint GraphQL endpoints.
 
 ![Banner](banner.png)
 
-[![CI](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml) [![CD](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml)
 
-![PyPI - License](https://img.shields.io/pypi/l/GraphDNA) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/GraphDNA)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/GraphDNA)
-
-[View on pypi!](https://pypi.org/project/GraphDNA/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/GraphDNA) ![PyPI - Downloads](https://img.shields.io/pypi/dm/GraphDNA)
 
 ## Getting Started
 
@@ -64,6 +60,6 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-## License
+## License ![PyPI - License](https://img.shields.io/pypi/l/GraphDNA)
 
 [MIT](https://choosealicense.com/licenses/mit/)
