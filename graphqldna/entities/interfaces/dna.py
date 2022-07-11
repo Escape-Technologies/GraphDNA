@@ -33,6 +33,8 @@ class IHTTPBucket(ABC):
     _headers: dict[str, str]
     _store: dict[str, aiohttp.ClientResponse | asyncio.Task]
     _queue: list[asyncio.Task]
+
+    _url: str
     _base_url: str
 
     _session: aiohttp.ClientSession | None

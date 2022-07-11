@@ -21,7 +21,10 @@ def find_engine(
 
 class GQLQueriesManager(IGQLQueriesManager):
 
-    def __init__(self, logger: logging.Logger) -> None:
+    def __init__(
+        self,
+        logger: logging.Logger,
+    ) -> None:
         self._heuristics = []
         self._logger = logger
 

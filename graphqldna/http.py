@@ -16,14 +16,15 @@ class HTTPBucket(IHTTPBucket):
     def __init__(
         self,
         logger: logging.Logger,
-        base_url: str,
+        url: str,
         headers: dict[str, str] | None,
     ) -> None:
         self._store = {}
         self._queue = []
         self._session = None
 
-        self._base_url = base_url
+        self._url = url
+        self._base_url = '/'.join(url.split('/')[0:3])
         self._headers = headers or {}
         self._logger = logger
 
@@ -60,6 +61,12 @@ class HTTPBucket(IHTTPBucket):
             request.url = request.url.replace(
                 '%%base_url%%',
                 self._base_url,
+            )
+
+        if '%%url%%' in request.url:
+            request.url = request.url.replace(
+                '%%url%%',
+                self._url,
             )
 
         self._store[key] = await self._session.request(

@@ -6,6 +6,7 @@ from graphqldna.entities.engines import GraphQLEngine
 from graphqldna.entities.interfaces.dna import IHTTPBucket
 from graphqldna.entities.interfaces.heuristics import IHeuristicsManager
 from graphqldna.heuristics.gql_queries import GQLQueriesManager
+from graphqldna.heuristics.web_properties import WebPropertiesManager
 
 
 class HeuristicsManager(IHeuristicsManager):
