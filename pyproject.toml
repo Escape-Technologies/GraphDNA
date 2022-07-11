@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "graphqldna"
-version = "0.0.1"
+version = "0.0.3"
 description = "Fast and powerful GraphQL engine fingerprinting tool"
 authors = ["Escape Technologies SAS <ping@escape.tech>"]
 maintainers = [
