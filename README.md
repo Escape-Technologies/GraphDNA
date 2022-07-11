@@ -1,5 +1,9 @@
 # GraphDNA ![PyPI](https://img.shields.io/pypi/v/GraphDNA)
 
+GraphDNA is a tool that uses multiple heuristics to fingerprint GraphQL endpoints.
+
+![Banner](banner.png)
+
 [![CI](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml) [![CD](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml)
 
 ![PyPI - License](https://img.shields.io/pypi/l/GraphDNA) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/GraphDNA)
@@ -9,14 +13,14 @@
 
 ## Getting Started
 
-I takes only two simple step to fingerprint an endpoint using GraphDNA.
+It takes only two simple steps to fingerprint an endpoint using GraphDNA.
 
 ```bash
 pip install graphdna
 graphdna -u https://example.com/graphql
 ```
 
-The full list of supported engines is [here](https://github.com/Escape-Technologies/GraphDNA/blob/main/graphdna/entities/engines.py).
+The full list of supported engines is accessible [here](https://github.com/Escape-Technologies/GraphDNA/blob/main/graphdna/entities/engines.py).
 
 ## Documentation
 
