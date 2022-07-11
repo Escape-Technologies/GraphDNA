@@ -1,28 +1,28 @@
-# GraphQL DNA ![PyPI](https://img.shields.io/pypi/v/GraphQLDNA)
+# GraphDNA ![PyPI](https://img.shields.io/pypi/v/GraphDNA)
 
-[![CI](https://github.com/Escape-Technologies/GraphQLDNA/actions/workflows/ci.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphQLDNA/actions/workflows/ci.yaml) [![CD](https://github.com/Escape-Technologies/GraphQLDNA/actions/workflows/cd.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphQLDNA/actions/workflows/cd.yaml)
+[![CI](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/ci.yaml) [![CD](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml/badge.svg)](https://github.com/Escape-Technologies/GraphDNA/actions/workflows/cd.yaml)
 
-![PyPI - License](https://img.shields.io/pypi/l/GraphQLDNA) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/GraphQLDNA)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/GraphQLDNA)
+![PyPI - License](https://img.shields.io/pypi/l/GraphDNA) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/GraphDNA)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/GraphDNA)
 
-[View on pypi!](https://pypi.org/project/GraphQLDNA/)
+[View on pypi!](https://pypi.org/project/GraphDNA/)
 
 ## Getting Started
 
-I takes only two simple step to fingerprint an endpoint using GraphQL DNA.
+I takes only two simple step to fingerprint an endpoint using GraphDNA.
 
 ```bash
-pip install graphqldna
-graphqldna -u https://example.com/graphql
+pip install graphdna
+graphdna -u https://example.com/graphql
 ```
 
-The full list of supported engines is [here](https://github.com/Escape-Technologies/GraphQLDNA/blob/main/graphqldna/entities/engines.py).
+The full list of supported engines is [here](https://github.com/Escape-Technologies/GraphDNA/blob/main/graphdna/entities/engines.py).
 
 ## Documentation
 
 ```python
-from graphqldna import detect_engine, detect_engine_async
-from graphqldna.entities import GraphQLEngine
+from graphdna import detect_engine, detect_engine_async
+from graphdna.entities import GraphQLEngine
 
 def detect_engine(
     url: str,

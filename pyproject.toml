@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "graphqldna"
+name = "graphdna"
 version = "0.0.3"
 description = "Fast and powerful GraphQL engine fingerprinting tool"
 authors = ["Escape Technologies SAS <ping@escape.tech>"]
@@ -8,20 +8,20 @@ maintainers = [
 ]
 license = "MIT"
 packages = [
-    { include = "graphqldna" }
+    { include = "graphdna" }
 ]
 include = [
     "LICENSE",
 ]
 readme = "README.md"
 "homepage" = "https://escape.tech/"
-"repository" = "https://github.com/Escape-Technologies/GraphQLDNA"
+"repository" = "https://github.com/Escape-Technologies/GraphDNA"
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/Escape-Technologies/GraphQLDNA/issues"
+"Bug Tracker" = "https://github.com/Escape-Technologies/GraphDNA/issues"
 
 [tool.poetry.scripts]
-graphqldna = 'graphqldna:cli'
+graphdna = 'graphdna:cli'
 
 [tool.coverage.run]
 omit = [

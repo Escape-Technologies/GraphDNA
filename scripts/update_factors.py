@@ -114,7 +114,7 @@ def update_queries_factor(
 
 
 def update_queries_starcount_factor() -> None:
-    directory_path = './graphqldna/heuristics/gql_queries'
+    directory_path = './graphdna/heuristics/gql_queries'
 
     max_stars = update_queries_starcount(directory_path)
     update_queries_factor(directory_path, max_stars)

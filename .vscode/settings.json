@@ -1,49 +1,49 @@
 {
-    "python.languageServer": "Pylance",
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.linting.pylintPath": "pylint",
-    "python.formatting.provider": "yapf",
-    "editor.formatOnSave": true,
-    "python.defaultInterpreterPath": ".venv/bin/python",
-    "mypy.runUsingActiveInterpreter": true,
-    "emeraldwalk.runonsave": {
-      "commands": [
-        {
-          "match": "\\.py$",
-          "cmd": "cd ${workspaceFolder} && isort -m 9 --line-length 160 graphqldna tests"
-        },
-        {
-          "match": "\\.py$",
-          "cmd": "cd ${workspaceFolder} && autoflake --in-place --remove-unused-variables --remove-all-unused-imports graphqldna/**/*.py"
-        },
-        {
-          "match": "\\.py$",
-          "cmd": "cd ${workspaceFolder} && docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphqldna test"
-        },
-        {
-          "match": "\\.py$",
-          "cmd": "cd ${workspaceFolder} && unify -ri graphqldna tests"
-        }
-      ]
-    },
-    "python.testing.pytestEnabled": true,
-    "python.testing.pytestPath": "../scripts/pytest-with-cov",
-    // "files.exclude": {
-    //     "**/__pycache__": true,
-    //     "**/.git": true,
-    //     "**/.svn": true,
-    //     "**/.hg": true,
-    //     "**/CVS": true,
-    //     "**/.DS_Store": true,
-    //     "**/Thumbs.db": true,
-    //     "**/.venv": true,
-    //     "**/.github": true,
-    //     "**/.vscode": true,
-    //     ".*": true,
-    //     "*.lock": true,
-    //     "*.json": true,
-    //     "LICENSE": true,
-    //     "*.js": true,
-    // }
+  "python.languageServer": "Pylance",
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintPath": "pylint",
+  "python.formatting.provider": "yapf",
+  "editor.formatOnSave": true,
+  "python.defaultInterpreterPath": ".venv/bin/python",
+  "mypy.runUsingActiveInterpreter": true,
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.py$",
+        "cmd": "cd ${workspaceFolder} && isort -m 9 --line-length 160 graphdna tests"
+      },
+      {
+        "match": "\\.py$",
+        "cmd": "cd ${workspaceFolder} && autoflake --in-place --remove-unused-variables --remove-all-unused-imports graphdna/**/*.py"
+      },
+      {
+        "match": "\\.py$",
+        "cmd": "cd ${workspaceFolder} && docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphdna test"
+      },
+      {
+        "match": "\\.py$",
+        "cmd": "cd ${workspaceFolder} && unify -ri graphdna tests"
+      }
+    ]
+  },
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestPath": "../scripts/pytest-with-cov",
+  "files.exclude": {
+      "**/__pycache__": true,
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/.venv": true,
+      "**/.github": true,
+      "**/.vscode": true,
+      ".*": true,
+      "*.lock": true,
+      "*.json": true,
+      "LICENSE": true,
+      "*.js": true,
   }
+}

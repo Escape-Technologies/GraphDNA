@@ -5,7 +5,7 @@ on:
     types: [opened, reopened]
 
 env:
-  MODULE_NAME: graphqldna
+  MODULE_NAME: graphdna
   MIN_TEST_COV: 0
 
 jobs:

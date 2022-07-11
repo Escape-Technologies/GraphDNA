@@ -2,37 +2,37 @@
   "type": "python",
   "venvActivate": "./.venv/bin/activate",
   "steps": [
-      {
-          "name": "autoflake",
-          "command": "autoflake -ri --remove-unused-variable --ignore-init-module-imports --remove-all-unused-imports graphqldna tests"
-      },
-      {
-          "name": "isort",
-          "command": "isort -m 9 --line-length 160 graphqldna tests"
-      },
-      {
-          "name": "unify",
-          "command": "unify -ri graphqldna tests"
-      },
-      {
-          "name": "docformatter",
-          "command": "docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphqldna tests"
-      },
-      {
-          "name": "yapf",
-          "command": "yapf -ri graphqldna tests"
-      },
-      {
-          "name": "pylint",
-          "command": "pylint --load-plugins pylint_quotes graphqldna tests"
-      },
-      {
-          "name": "mypy",
-          "command": "mypy graphqldna tests"
-      },
-      {
-          "name": "pytest",
-          "command": "pytest tests"
-      }
+    {
+      "name": "autoflake",
+      "command": "autoflake -ri --remove-unused-variable --ignore-init-module-imports --remove-all-unused-imports graphdna tests"
+    },
+    {
+      "name": "isort",
+      "command": "isort -m 9 --line-length 160 graphdna tests"
+    },
+    {
+      "name": "unify",
+      "command": "unify -ri graphdna tests"
+    },
+    {
+      "name": "docformatter",
+      "command": "docformatter --wrap-summaries 160 --wrap-descriptions 160 -ri graphdna tests"
+    },
+    {
+      "name": "yapf",
+      "command": "yapf -ri graphdna tests"
+    },
+    {
+      "name": "pylint",
+      "command": "pylint --load-plugins pylint_quotes graphdna tests"
+    },
+    {
+      "name": "mypy",
+      "command": "mypy graphdna tests"
+    },
+    {
+      "name": "pytest",
+      "command": "pytest tests"
+    }
   ]
 }
