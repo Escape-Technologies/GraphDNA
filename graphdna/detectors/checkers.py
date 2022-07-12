@@ -17,6 +17,8 @@ def in_response_text(data: str | list[str]) -> functools.partial:
         assert response, 'Response is required.'
 
         response_text = await response.text()
+        if not response_text:
+            return False
         return any(text in response_text for text in data)
 
     return functools.partial(__internal, data)
@@ -39,7 +41,7 @@ def in_section(
         assert response, 'Response is required.'
 
         response_json = await response.json()
-        if section not in response_json:
+        if response_json or section not in response_json:
             return False
 
         section_text = json.dumps(response_json[section])
@@ -61,6 +63,8 @@ def has_json_key(sections: str | list[str]) -> functools.partial:
         assert response, 'Response is required.'
 
         response_json = await response.json()
+        if not response_json:
+            return False
         return all(section in response_json for section in sections)
 
     return functools.partial(__internal, sections)
