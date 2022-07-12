@@ -65,6 +65,8 @@ class GQLQueriesManager(IGQLQueriesManager):
         for heuristic in self._heuristics:
             for req_hash, _evals in heuristic.genetics.items():
                 client_response = bucket.get(req_hash)
+                if not client_response:
+                    continue
 
                 if not isinstance(_evals, list):
                     _evals = [_evals]
@@ -74,7 +76,7 @@ class GQLQueriesManager(IGQLQueriesManager):
                         if not await _eval(client_response):
                             continue
                     except aiohttp.client_exceptions.ContentTypeError:
-                        self._logger.error('Response is not JSON. Are you sure this is a GraphQL endpoint?')
+                        self._logger.error('Response content unpacking failed.')
                         continue
 
                     yield heuristic, heuristic.__engine__

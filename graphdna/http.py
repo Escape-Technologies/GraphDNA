@@ -46,9 +46,9 @@ class HTTPBucket(IHTTPBucket):
     def get(
         self,
         key: str,
-    ) -> aiohttp.ClientResponse:
+    ) -> aiohttp.ClientResponse | None:
         value = self._store.get(key)
-        assert isinstance(value, aiohttp.ClientResponse)
+        assert isinstance(value, aiohttp.ClientResponse) or value is None
         return value
 
     async def send_request(
@@ -74,11 +74,15 @@ class HTTPBucket(IHTTPBucket):
         if self._logger.level < logging.DEBUG:
             self._logger.debug(f'[{request.method}] {request.url} {request.kwargs}')
 
-        self._store[key] = await self._session.request(
-            request.method,
-            request.url,
-            **request.kwargs,
-        )
+        try:
+            self._store[key] = await self._session.request(
+                request.method,
+                request.url,
+                **request.kwargs,
+            )
+        except asyncio.exceptions.TimeoutError:
+            self._logger.debug(f'[{request.method}] {request.url} timed out.')
+            self._store[key] = None
 
     async def consume_bucket(self) -> None:
         self._logger.info(f'Consuming bucket of {len(self._queue)} requests.')

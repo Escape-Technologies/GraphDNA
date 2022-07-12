@@ -58,6 +58,8 @@ class WebPropertiesManager(IWebPropertiesManager):
         for heuristic in self._heuristics:
             for req_hash, _evals in heuristic.requests:
                 client_reponse = bucket.get(cast(str, req_hash))
+                if not client_reponse:
+                    continue
 
                 if not isinstance(_evals, list):
                     _evals = [_evals]
@@ -67,6 +69,7 @@ class WebPropertiesManager(IWebPropertiesManager):
                         if not await _eval(client_reponse):
                             continue
                     except aiohttp.client_exceptions.ContentTypeError:
+                        self._logger.error('Response content unpacking failed.')
                         continue
 
                     yield heuristic, heuristic.__engine__
