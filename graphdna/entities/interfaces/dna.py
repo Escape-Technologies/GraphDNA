@@ -24,14 +24,14 @@ class IRequest:
         self.method = method or 'GET'
         self.kwargs = kwargs or {}
 
-        # Disable all redirects
         self.kwargs['allow_redirects'] = False
+        self.kwargs['timeout'] = 3
 
 
 class IHTTPBucket(ABC):
 
     _headers: dict[str, str]
-    _store: dict[str, aiohttp.ClientResponse | asyncio.Task]
+    _store: dict[str, aiohttp.ClientResponse | asyncio.Task | None]
     _queue: list[asyncio.Task]
 
     _url: str
@@ -61,7 +61,7 @@ class IHTTPBucket(ABC):
     def get(
         self,
         key: str,
-    ) -> aiohttp.ClientResponse:
+    ) -> aiohttp.ClientResponse | None:
         ...
 
     @abstractmethod
