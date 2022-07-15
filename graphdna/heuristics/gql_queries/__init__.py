@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from typing import AsyncGenerator
 
@@ -75,7 +76,7 @@ class GQLQueriesManager(IGQLQueriesManager):
                     try:
                         if not await _eval(client_response):
                             continue
-                    except aiohttp.client_exceptions.ContentTypeError:
+                    except (aiohttp.client_exceptions.ContentTypeError, asyncio.exceptions.TimeoutError):
                         self._logger.error('Response content unpacking failed.')
                         continue
 

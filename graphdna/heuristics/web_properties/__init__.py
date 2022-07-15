@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from typing import AsyncGenerator, cast
 
@@ -68,7 +69,7 @@ class WebPropertiesManager(IWebPropertiesManager):
                     try:
                         if not await _eval(client_reponse):
                             continue
-                    except aiohttp.client_exceptions.ContentTypeError:
+                    except (aiohttp.client_exceptions.ContentTypeError, asyncio.exceptions.TimeoutError):
                         self._logger.error('Response content unpacking failed.')
                         continue
 
