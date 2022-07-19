@@ -3,7 +3,7 @@
 import functools
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, AsyncGenerator, Dict, List, Optional, Union, Tuple
+from typing import Any, AsyncGenerator, Dict, List, Optional, Tuple, Union
 
 from graphdna.entities.engines import GraphQLEngine
 from graphdna.entities.interfaces import IHTTPBucket

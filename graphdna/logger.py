@@ -1,9 +1,8 @@
 """Manage logging flow."""
 
-from typing import Optional
-
 import logging
 import os
+from typing import Optional
 
 import json_log_formatter  # type: ignore[import]
 

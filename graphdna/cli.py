@@ -2,7 +2,6 @@
 
 import argparse
 import sys
-
 from typing import List, Optional
 
 from graphdna.dna import detect_engine

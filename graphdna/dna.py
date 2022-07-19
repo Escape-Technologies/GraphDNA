@@ -1,9 +1,8 @@
 """Handle DNA flow for a given GraphQL endpoint."""
 
-from typing import Dict, Optional
-
 import asyncio
 import logging
+from typing import Dict, Optional
 
 from graphdna.entities import GraphQLEngine
 from graphdna.entities.interfaces import IGraphDNA

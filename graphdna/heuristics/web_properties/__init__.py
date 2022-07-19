@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import AsyncGenerator, cast, List, Tuple
+from typing import AsyncGenerator, List, Tuple, cast
 
 import aiohttp
 

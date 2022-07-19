@@ -1,9 +1,8 @@
 import functools
 import json
+from typing import List, Union
 
 import aiohttp
-
-from typing import List, Union
 
 
 def in_response_text(data: Union[str, List[str]]) -> functools.partial:
