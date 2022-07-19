@@ -23,22 +23,25 @@ The full list of supported engines is accessible [here](https://github.com/Escap
 ## Documentation
 
 ```python
+import logging
+from typing import Dict, Optional
+
 from graphdna import detect_engine, detect_engine_async
 from graphdna.entities import GraphQLEngine
 
 def detect_engine(
     url: str,
-    headers: dict[str, str] | None = None,
-    logger: logging.Logger | None = None,
-) -> GraphQLEngine | None:
+    headers: Optional[Dict[str, str]] = None,
+    logger: Optional[logging.Logger] = None,
+) -> Optional[GraphQLEngine]:
     ...
 
 
 async def detect_engine_async(
     url: str,
-    headers: dict[str, str] | None = None,
-    logger: logging.Logger | None = None,
-) -> GraphQLEngine | None:
+    headers: Optional[Dict[str, str]] = None,
+    logger: Optional[logging.Logger] = None,
+) -> Optional[GraphQLEngine]:
     ...
 ```
 

@@ -1,4 +1,4 @@
-from typing import Generator
+from typing import Dict, Generator, Tuple
 
 import os
 import datetime
@@ -9,7 +9,7 @@ import requests
 def generate_stars_query(
     name: str,
     owner: str,
-) -> dict:
+) -> Dict:
     """Generate the query to fetch stars of a certain repo."""
 
     return {
@@ -37,7 +37,7 @@ def get_starcount(
     return stars
 
 
-def valid_query_file(path: str) -> Generator[tuple[str, str], None, None]:
+def valid_query_file(path: str) -> Generator[Tuple[str, str], None, None]:
     for file in os.listdir(path):
         if '__' in file or not file.endswith('.py'):
             continue
@@ -121,7 +121,6 @@ def update_queries_starcount_factor() -> None:
 
 
 if __name__ == '__main__':
-
     assert os.getenv('GITHUB_TOKEN') is not None, 'GITHUB_TOKEN is not set'
 
     update_queries_starcount_factor()

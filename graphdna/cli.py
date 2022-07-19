@@ -3,10 +3,12 @@
 import argparse
 import sys
 
+from typing import List, Optional
+
 from graphdna.dna import detect_engine
 
 
-def parse_args(args: list[str]) -> argparse.Namespace:
+def parse_args(args: List[str]) -> argparse.Namespace:
     """Parse the arguments."""
 
     parser = argparse.ArgumentParser()
@@ -27,7 +29,7 @@ def validate_args(args: argparse.Namespace) -> None:
         raise ValueError('The URL is required.')
 
 
-def cli(argv: list[str] | None = None) -> None:
+def cli(argv: Optional[List[str]] = None) -> None:
     """CLI entry point."""
 
     if argv is None:

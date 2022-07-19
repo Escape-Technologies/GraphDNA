@@ -1,5 +1,7 @@
 """Manage logging flow."""
 
+from typing import Optional
+
 import logging
 import os
 
@@ -39,7 +41,7 @@ def install_logger(logger: logging.Logger) -> None:
     logging.getLogger('asyncio').setLevel(logging.ERROR)
 
 
-def setup_logger(name: str | None = None) -> logging.Logger:
+def setup_logger(name: Optional[str] = None) -> logging.Logger:
     """Setup logger."""
 
     name = name or 'graphdna'

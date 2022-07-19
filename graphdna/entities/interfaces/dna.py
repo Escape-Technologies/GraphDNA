@@ -1,7 +1,8 @@
 import asyncio
 import logging
+
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Dict, List, Optional, Union
 
 import aiohttp
 
@@ -12,13 +13,13 @@ class IRequest:
 
     url: str
     method: str
-    kwargs: dict[str, Any]
+    kwargs: Dict[str, Any]
 
     def __init__(
         self,
         url: str,
         method: str,
-        kwargs: dict[str, Any] = None,
+        kwargs: Dict[str, Any] = None,
     ) -> None:
         self.url = url
         self.method = method or 'GET'
@@ -30,14 +31,14 @@ class IRequest:
 
 class IHTTPBucket(ABC):
 
-    _headers: dict[str, str]
-    _store: dict[str, aiohttp.ClientResponse | asyncio.Task | None]
-    _queue: list[asyncio.Task]
+    _headers: Dict[str, str]
+    _store: Dict[str, Union[aiohttp.ClientResponse, asyncio.Task, None]]
+    _queue: List[asyncio.Task]
 
     _url: str
     _base_url: str
 
-    _session: aiohttp.ClientSession | None
+    _session: Optional[aiohttp.ClientSession]
     _logger: logging.Logger
 
     @staticmethod
@@ -61,7 +62,7 @@ class IHTTPBucket(ABC):
     def get(
         self,
         key: str,
-    ) -> aiohttp.ClientResponse | None:
+    ) -> Optional[aiohttp.ClientResponse]:
         ...
 
     @abstractmethod
@@ -96,5 +97,5 @@ class IGraphDNA(ABC):
         return self._url
 
     @abstractmethod
-    async def run(self) -> GraphQLEngine | None:
+    async def run(self) -> Optional[GraphQLEngine]:
         ...

@@ -1,3 +1,5 @@
+from typing import Dict, Optional
+
 import asyncio
 import logging
 
@@ -17,7 +19,7 @@ class HTTPBucket(IHTTPBucket):
         self,
         logger: logging.Logger,
         url: str,
-        headers: dict[str, str] | None,
+        headers: Optional[Dict[str, str]],
     ) -> None:
         self._store = {}
         self._queue = []
@@ -46,7 +48,7 @@ class HTTPBucket(IHTTPBucket):
     def get(
         self,
         key: str,
-    ) -> aiohttp.ClientResponse | None:
+    ) -> Optional[aiohttp.ClientResponse]:
         value = self._store.get(key)
         assert isinstance(value, aiohttp.ClientResponse) or value is None
         return value

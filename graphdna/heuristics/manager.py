@@ -59,7 +59,7 @@ class HeuristicsManager(IHeuristicsManager):
             self._logger.debug(f'{engine.name.capitalize()}: {round(score, 2)} pts')
 
     @property
-    def best_candidate(self) -> GraphQLEngine | None:
+    def best_candidate(self) -> Optional[GraphQLEngine]:
         """Fetch the best candidate engine.
 
         If any, the highest confidence will be returned.

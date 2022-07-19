@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Dict, List, Tuple
 
 import aiohttp
 
@@ -17,7 +17,6 @@ class GQLQueriesManager(IGQLQueriesManager):
         logger: logging.Logger,
     ) -> None:
         self._heuristics = []
-
         self._logger = logger
 
     def load(self) -> None:
@@ -26,7 +25,7 @@ class GQLQueriesManager(IGQLQueriesManager):
             __name__,
         )
 
-        heuristics: list[IGQLQuery] = []
+        heuristics: List[IGQLQuery] = []
         for raw in raw_heuritics:
             engine = raw.__name__.split('.')[-1]
             engine = find_engine(engine, dir(raw))
@@ -43,7 +42,7 @@ class GQLQueriesManager(IGQLQueriesManager):
     ) -> None:
         # Refactor enqueue with a generator
         for heuristic in self._heuristics:
-            new_genetics: dict[str, EvalMethods] = {}
+            new_genetics: Dict[str, EvalMethods] = {}
 
             for query, _evals in heuristic.genetics.items():
                 req = IRequest('%%url%%', 'POST', {
@@ -62,14 +61,14 @@ class GQLQueriesManager(IGQLQueriesManager):
     async def parse_requests(  # type: ignore[override]
         self,
         bucket: IHTTPBucket,
-    ) -> AsyncGenerator[tuple[IGQLQuery, GraphQLEngine], None]:
+    ) -> AsyncGenerator[Tuple[IGQLQuery, GraphQLEngine], None]:
         for heuristic in self._heuristics:
             for req_hash, _evals in heuristic.genetics.items():
                 client_response = bucket.get(req_hash)
                 if not client_response:
                     continue
 
-                if not isinstance(_evals, list):
+                if not isinstance(_evals, List):
                     _evals = [_evals]
 
                 for _eval in _evals:
