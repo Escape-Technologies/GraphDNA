@@ -78,7 +78,6 @@ class IHeuristicsManager(ABC):
     @abstractmethod
     async def enqueue_requests(
         self,
-        url: str,
         bucket: IHTTPBucket,
     ) -> None:
         ...

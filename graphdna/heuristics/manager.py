@@ -1,6 +1,7 @@
 """Manage heuristics flow."""
 
 import logging
+from typing import Optional
 
 from graphdna.entities.engines import GraphQLEngine
 from graphdna.entities.interfaces.dna import IHTTPBucket
@@ -27,7 +28,6 @@ class HeuristicsManager(IHeuristicsManager):
 
     async def enqueue_requests(
         self,
-        url: str,
         bucket: IHTTPBucket,
     ) -> None:
         await self._gql_queries_manager.enqueue_requests(bucket)

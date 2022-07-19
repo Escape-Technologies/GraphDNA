@@ -68,7 +68,7 @@ class GraphDNA(IGraphDNA):
         heuristics = HeuristicsManager(self._logger)
         heuristics.load()
 
-        await heuristics.enqueue_requests(self._url, self._http_bucket)
+        await heuristics.enqueue_requests(self._http_bucket)
         await self._http_bucket.consume_bucket()
         await heuristics.parse_requests(self._http_bucket)
         heuristics.display_results()
