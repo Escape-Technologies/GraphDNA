@@ -3,13 +3,13 @@
 import functools
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, AsyncGenerator
+from typing import Any, AsyncGenerator, Dict, List, Optional, Tuple, Union
 
 from graphdna.entities.engines import GraphQLEngine
 from graphdna.entities.interfaces import IHTTPBucket
 from graphdna.entities.interfaces.dna import IRequest
 
-EvalMethods = functools.partial | list[functools.partial]
+EvalMethods = Union[functools.partial, List[functools.partial]]
 
 
 class IHeuristic(ABC):
@@ -23,12 +23,12 @@ class IHeuristic(ABC):
 
 class IGQLQuery(IHeuristic):
 
-    genetics: dict[str, EvalMethods]
+    genetics: Dict[str, EvalMethods]
 
 
 class IWebProperty(IHeuristic):
 
-    requests: list[tuple[IRequest, EvalMethods]]
+    requests: List[Tuple[IRequest, EvalMethods]]
 
 
 class IHeuristicManager(ABC):
@@ -50,24 +50,24 @@ class IHeuristicManager(ABC):
     async def parse_requests(
         self,
         bucket: IHTTPBucket,
-    ) -> AsyncGenerator[tuple[Any, GraphQLEngine], None]:
+    ) -> AsyncGenerator[Tuple[Any, GraphQLEngine], None]:
         ...
 
 
 class IGQLQueriesManager(IHeuristicManager):
 
-    _heuristics: list[IGQLQuery]
+    _heuristics: List[IGQLQuery]
 
 
 class IWebPropertiesManager(IHeuristicManager):
 
-    _heuristics: list[IWebProperty]
+    _heuristics: List[IWebProperty]
 
 
 class IHeuristicsManager(ABC):
 
     _logger: logging.Logger
-    _candidates: dict[GraphQLEngine, int]
+    _candidates: Dict[GraphQLEngine, int]
 
     _gql_queries_manager: IHeuristicManager
 
@@ -78,7 +78,6 @@ class IHeuristicsManager(ABC):
     @abstractmethod
     async def enqueue_requests(
         self,
-        url: str,
         bucket: IHTTPBucket,
     ) -> None:
         ...
@@ -104,5 +103,5 @@ class IHeuristicsManager(ABC):
 
     @property
     @abstractmethod
-    def best_candidate(self) -> GraphQLEngine | None:
+    def best_candidate(self) -> Optional[GraphQLEngine]:
         ...

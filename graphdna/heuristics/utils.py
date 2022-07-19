@@ -2,11 +2,12 @@ from importlib import import_module
 from pathlib import Path
 from pkgutil import iter_modules
 from types import ModuleType
+from typing import List
 
 
 def find_engine(
     engine: str,
-    possibilities: list[str],
+    possibilities: List[str],
 ) -> str:
     for p in possibilities:
         if engine == p.lower():
@@ -18,7 +19,7 @@ def find_engine(
 def import_heuristics(
     pkg_file: str,
     pkg_name: str,
-) -> list[ModuleType]:
+) -> List[ModuleType]:
     pkg_path = str(Path(pkg_file).parent.absolute())
 
     filenames = [filename for _, filename, _ in iter_modules([pkg_path])]

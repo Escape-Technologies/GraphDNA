@@ -1,6 +1,7 @@
 """Manage heuristics flow."""
 
 import logging
+from typing import Optional
 
 from graphdna.entities.engines import GraphQLEngine
 from graphdna.entities.interfaces.dna import IHTTPBucket
@@ -27,7 +28,6 @@ class HeuristicsManager(IHeuristicsManager):
 
     async def enqueue_requests(
         self,
-        url: str,
         bucket: IHTTPBucket,
     ) -> None:
         await self._gql_queries_manager.enqueue_requests(bucket)
@@ -59,7 +59,7 @@ class HeuristicsManager(IHeuristicsManager):
             self._logger.debug(f'{engine.name.capitalize()}: {round(score, 2)} pts')
 
     @property
-    def best_candidate(self) -> GraphQLEngine | None:
+    def best_candidate(self) -> Optional[GraphQLEngine]:
         """Fetch the best candidate engine.
 
         If any, the highest confidence will be returned.

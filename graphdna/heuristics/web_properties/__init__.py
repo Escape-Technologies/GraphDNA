@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import AsyncGenerator, cast
+from typing import AsyncGenerator, List, Tuple, cast
 
 import aiohttp
 
@@ -26,7 +26,7 @@ class WebPropertiesManager(IWebPropertiesManager):
             __name__,
         )
 
-        heuristics: list[IWebProperty] = []
+        heuristics: List[IWebProperty] = []
         for raw in raw_heuritics:
             engine = raw.__name__.split('.')[-1]
             engine = find_engine(engine, dir(raw))
@@ -43,7 +43,7 @@ class WebPropertiesManager(IWebPropertiesManager):
     ) -> None:
         for heuristic in self._heuristics:
 
-            new_requests: list[tuple[str, EvalMethods]] = []
+            new_requests: List[Tuple[str, EvalMethods]] = []
             for req, _evals in heuristic.requests:
                 req_hash = await bucket.put(req)
 
@@ -54,7 +54,7 @@ class WebPropertiesManager(IWebPropertiesManager):
     async def parse_requests(  # type: ignore[override]
         self,
         bucket: IHTTPBucket,
-    ) -> AsyncGenerator[tuple[IWebProperty, GraphQLEngine], None]:
+    ) -> AsyncGenerator[Tuple[IWebProperty, GraphQLEngine], None]:
 
         for heuristic in self._heuristics:
             for req_hash, _evals in heuristic.requests:
@@ -62,7 +62,7 @@ class WebPropertiesManager(IWebPropertiesManager):
                 if not client_reponse:
                     continue
 
-                if not isinstance(_evals, list):
+                if not isinstance(_evals, List):
                     _evals = [_evals]
 
                 for _eval in _evals:

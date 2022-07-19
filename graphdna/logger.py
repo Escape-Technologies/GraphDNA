@@ -2,6 +2,7 @@
 
 import logging
 import os
+from typing import Optional
 
 import json_log_formatter  # type: ignore[import]
 
@@ -39,7 +40,7 @@ def install_logger(logger: logging.Logger) -> None:
     logging.getLogger('asyncio').setLevel(logging.ERROR)
 
 
-def setup_logger(name: str | None = None) -> logging.Logger:
+def setup_logger(name: Optional[str] = None) -> logging.Logger:
     """Setup logger."""
 
     name = name or 'graphdna'

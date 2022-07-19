@@ -1,16 +1,17 @@
 import functools
 import json
+from typing import List, Union
 
 import aiohttp
 
 
-def in_response_text(data: str | list[str]) -> functools.partial:
+def in_response_text(data: Union[str, List[str]]) -> functools.partial:
 
     if isinstance(data, str):
         data = [data]
 
     async def __internal(
-        data: list[str],
+        data: List[str],
         response: aiohttp.ClientResponse = None,
     ) -> bool:
 
@@ -26,7 +27,7 @@ def in_response_text(data: str | list[str]) -> functools.partial:
 
 def in_section(
     section: str,
-    data: str | list[str],
+    data: Union[str, List[str]],
 ) -> functools.partial:
 
     if isinstance(data, str):
@@ -34,7 +35,7 @@ def in_section(
 
     async def __internal(
         section: str,
-        data: list[str],
+        data: List[str],
         response: aiohttp.ClientResponse = None,
     ) -> bool:
 
@@ -50,13 +51,13 @@ def in_section(
     return functools.partial(__internal, section, data)
 
 
-def has_json_key(sections: str | list[str]) -> functools.partial:
+def has_json_key(sections: Union[str, List[str]]) -> functools.partial:
 
     if isinstance(sections, str):
         sections = [sections]
 
     async def __internal(
-        sections: list[str],
+        sections: List[str],
         response: aiohttp.ClientResponse = None,
     ) -> bool:
 
