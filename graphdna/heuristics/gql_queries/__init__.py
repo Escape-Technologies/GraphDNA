@@ -76,7 +76,7 @@ class GQLQueriesManager(IGQLQueriesManager):
                         if not await _eval(client_response):
                             continue
                     except (aiohttp.client_exceptions.ContentTypeError, asyncio.TimeoutError):
-                        self._logger.error('Response content unpacking failed.')
+                        self._logger.warning('Response content unpacking failed.')
                         continue
 
                     yield heuristic, heuristic.__engine__

@@ -70,7 +70,7 @@ class WebPropertiesManager(IWebPropertiesManager):
                         if not await _eval(client_reponse):
                             continue
                     except (aiohttp.client_exceptions.ContentTypeError, asyncio.TimeoutError):
-                        self._logger.error('Response content unpacking failed.')
+                        self._logger.warning('Response content unpacking failed.')
                         continue
 
                     yield heuristic, heuristic.__engine__
