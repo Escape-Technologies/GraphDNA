@@ -31,10 +31,8 @@ def install_logger(logger: logging.Logger) -> None:
     handlers['json'].setFormatter(JSONFormat())
     handlers['console'].setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(name)s - %(message)s'))
 
-    log_format = os.getenv('LOG_FORMAT', 'console')
-
-    logger.addHandler(handlers[log_format])
-    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handlers[os.getenv('LOG_FORMAT', 'console')])
+    logger.setLevel(logging.DEBUG if os.getenv('DEBUG') else logging.INFO)
 
     # Ignore asyncio debug logs
     logging.getLogger('asyncio').setLevel(logging.ERROR)
