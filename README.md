@@ -45,6 +45,14 @@ async def detect_engine_async(
     ...
 ```
 
+## Environment Variables
+
+**Logger** - *No effect if you pass your own logger*
+| Name | Values  | Default| Behavior|
+|------|--------|--------|--------|
+| `LOG_FORMAT` | `console`, `json` | `console` | Change the log format accordingly |
+| `DEBUG` | `True`, `False` | `False` | Enable debug logging |
+
 ## Local installation
 
 ```bash
