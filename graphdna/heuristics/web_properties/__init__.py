@@ -51,6 +51,7 @@ class WebPropertiesManager(IWebPropertiesManager):
 
             heuristic.requests = new_requests  # type: ignore[assignment]
 
+    # pylint: disable=invalid-overridden-method
     async def parse_requests(
         self,
         bucket: IHTTPBucket,

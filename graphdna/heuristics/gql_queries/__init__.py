@@ -58,6 +58,7 @@ class GQLQueriesManager(IGQLQueriesManager):
 
             heuristic.genetics = new_genetics
 
+    # pylint: disable=invalid-overridden-method
     async def parse_requests(
         self,
         bucket: IHTTPBucket,
