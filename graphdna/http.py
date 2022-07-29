@@ -81,7 +81,7 @@ class HTTPBucket(IHTTPBucket):
                 request.url,
                 **request.kwargs,
             )
-        except asyncio.exceptions.TimeoutError:
+        except asyncio.TimeoutError:
             self._logger.debug(f'[{request.method}] {request.url} timed out.')
             self._store[key] = None
 
