@@ -47,7 +47,7 @@ class IHeuristicManager(ABC):
         ...
 
     @abstractmethod
-    async def parse_requests(
+    def parse_requests(
         self,
         bucket: IHTTPBucket,
     ) -> AsyncGenerator[Tuple[Any, GraphQLEngine], None]:
