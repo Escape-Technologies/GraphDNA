@@ -58,7 +58,7 @@ class GQLQueriesManager(IGQLQueriesManager):
 
             heuristic.genetics = new_genetics
 
-    async def parse_requests(  # type: ignore[override]
+    async def parse_requests(
         self,
         bucket: IHTTPBucket,
     ) -> AsyncGenerator[Tuple[IGQLQuery, GraphQLEngine], None]:

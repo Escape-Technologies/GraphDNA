@@ -51,7 +51,7 @@ class WebPropertiesManager(IWebPropertiesManager):
 
             heuristic.requests = new_requests  # type: ignore[assignment]
 
-    async def parse_requests(  # type: ignore[override]
+    async def parse_requests(
         self,
         bucket: IHTTPBucket,
     ) -> AsyncGenerator[Tuple[IWebProperty, GraphQLEngine], None]:
